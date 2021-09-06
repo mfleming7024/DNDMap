@@ -1,0 +1,48 @@
+<div class="bag-overlay" ng-controller="gardenController">
+    <div class="bag">
+        <header>
+            <div class="bag__title">
+                <div>Druid Bag</div>
+            </div>
+            <div class="bag__day-control">
+                <div>Add a day of growth for crops</div>
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-plus-square" ng-click="addDay()"></i>
+            </div>
+        </header>
+        
+        <div class="bag-garden">
+            <div class="bag-garden-item {{item.rarity}}" ng-repeat="item in plants">
+                <header>
+                    <div class="item-name">({{item.quantity}}x) {{item.name}}</div>
+                    <div class="item-harvest-time">Day {{item.timeToHarvest}}/{{item.growthCycle}}</div>
+                </header>
+                <div class="item-info">
+                    <section>
+                        <div>
+                            <b>Location:</b> {{item.location}}
+                        </div>
+                        <div class="item-harvest-info">
+                            <b>Harvest:</b> DC {{item.harvestDC}}
+                            <br>
+                            <b>If Fail:</b> {{item.harvestFailInfo}}
+                            <br>
+                            <b>Price:</b> {{item.price}}
+                            <br>
+                            <b>Harvested:</b> {{item.inv_quantity || "0"}}
+                        </div>
+                    </section>
+                    <aside>
+                        <img ng-src="{{item.picture}}" />
+                    </aside>
+                </div>
+                <footer>
+                    <button ng-click="addPlant(item.name)"><i class="fas fa-plus"></i> Add</button>
+                    <button ng-click="harvestPlant(item.name, item.quantity)"
+                        ng-class="{'disable-button': item.timeToHarvest < item.growthCycle || item.growthCycle == 0}"><i class="fas fa-cut"></i>
+                        Harvest</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>

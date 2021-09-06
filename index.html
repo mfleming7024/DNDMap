@@ -1,0 +1,100 @@
+<html ng-app="myApp">
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>DND Map App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="node_modules/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="node_modules/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css?family=Alegreya:700&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/leaflet.awesome-markers.min.js"></script>
+  <script src="https://kit.fontawesome.com/3f39d832a7.js" crossorigin="anonymous"></script>
+</head>
+<body ng-controller="mainController">
+  <header>
+    <i class="fas fa-map"></i><h1 id="map-name">Map of {{mapName}}</h1>
+    <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr" target="_blank">
+      <i class="fas fa-microphone"></i>
+    </a>
+    <i class="pull-right fas fa-flask" ng-class="{'green': godMode}" ng-click="togglePotionLab();"></i>
+    <i class="pull-right fas fa-seedling" ng-class="{'green': godMode}" ng-click="toggleGarden();"></i>
+  </header>
+
+
+
+  <leaflet id="map" 
+    defaults="defaults" 
+    maxBounds="maxBounds" 
+    center="center" 
+    layers="layers" 
+    paths="paths" 
+    markers="markers"
+    event-broadcast="events">
+  </leaflet>
+
+  <!-- Partial for potion lab -->
+  <div ng-if="showPotionLab">
+    <ng-include src="'./templates/potionlab.html'"></ng-include>
+  </div>
+
+  <!-- Partial for druid bag -->
+  <div ng-if="showGarden">
+    <ng-include src="'./templates/druidbag.html'"></ng-include>
+  </div>
+
+ <!--  <div>Defaults: {{defaults}}</div>
+  <br /> -->
+  <!-- <div>MaxBounds: {{maxBounds}}</div>
+  <input type="number" ng-model="maxBounds.northEast.lat" />
+  <input type="number" ng-model="maxBounds.northEast.lng" />
+  <br />
+  <div>Center: {{center}}</div>
+  <input type="number" ng-model="center.lat" />
+  <input type="number" ng-model="center.lng" />
+  <br />
+  <div>Bounds: {{bounds}}</div>
+  <input type="number" ng-model="bounds.northEast.lat" />
+  <input type="number" ng-model="bounds.northEast.lng" />
+  <br /> -->
+<!--   <div>Markers: {{markers}}</div>
+  <br /> -->
+  <!-- <div>Layers: {{layers.overlays}}</div>
+  <br /> -->
+ <!--  <div>Paths: {{paths}}</div>
+  <br /> -->
+
+  <script src="node_modules/angular/angular.js"></script>
+  <script type="text/javascript" src="node_modules/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+  <script type="text/javascript" src="node_modules/ui-leaflet/dist/ui-leaflet.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/services/MongoURLService.js"></script>
+  <script type="text/javascript" src="js/services/IngredientsService.js"></script>
+  <script type="text/javascript" src="js/map/MapController.js"></script>
+  <script type="text/javascript" src="js/garden/GardenController.js"></script>
+  <script type="text/javascript" src="js/potionlab/PotionController.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

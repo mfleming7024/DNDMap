@@ -1,0 +1,25 @@
+<div class="potion-overlay" ng-controller="potionController">
+    <div class="potion-lab">
+        <header>
+            <div>
+                Current Crafting Level 2<br>
+                (2/5) Successful crafts at level 2
+            </div>
+        </header>
+        <hr />
+        <div style="margin-bottom:10px;">Craftable Potions (Level 1-3)</div>
+        <div ng-repeat="potion in potions" ng-if="potion.isCraftable">
+            <div class="potion-lab-potions">
+                <div>Name: {{potion.name}}</div>
+                <div>Description: {{potion.desc}}</div>
+                <div>DC: {{potion.dc}}</div>
+                <div>Price: {{potion.price}}</div>
+            </div>
+        </div>
+
+        <div style="margin: 15px 0 10px;">Not Craftable (Level 1-3)</div>
+        <div ng-repeat="potion in potions" ng-if="!potion.isCraftable">
+            {{potion.name}}
+        </div>
+    </div>
+</div>
