@@ -8,18 +8,15 @@
         </header>
         <hr />
         <div style="margin-bottom:10px;">Craftable Potions (Level 1-3)</div>
-        <div ng-repeat="potion in potions" ng-if="potion.isCraftable">
-            <div class="potion-lab-potions">
-                <div>Name: {{potion.name}}</div>
-                <div>Description: {{potion.desc}}</div>
-                <div>DC: {{potion.dc}}</div>
-                <div>Price: {{potion.price}}</div>
+        <div class="potion-container">
+            <div class="potion" ng-repeat="potion in potions" ng-if="potion.isCraftable">
+                <div class="potion-name"><b>Name:</b> {{potion.name}}</div>
+                <div class="potion-desc"><b>Description:</b> {{potion.desc}}</div>
+                <div class="potion-dc"><b>DC:</b> {{potion.dc}}</div>
+                <div class="potion-price"><b>Price:</b> {{potion.price}}</div>
+                <div class="potion-main"><b>Main Ingredients:</b> {{potion.main}}</div>
+                <div class="potion-main"><b>Secondary Ingredients:</b> {{potion.secondary}}</div>
             </div>
-        </div>
-
-        <div style="margin: 15px 0 10px;">Not Craftable (Level 1-3)</div>
-        <div ng-repeat="potion in potions" ng-if="!potion.isCraftable">
-            {{potion.name}}
         </div>
     </div>
 </div>

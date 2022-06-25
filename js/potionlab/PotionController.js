@@ -113,7 +113,7 @@ angular.module('myApp')
 
         // Ingredient not Harvested
         if (!harvestedIng.length) {
-            console.log(ingName, 'not harvested.');
+            // console.log(ingName, 'not harvested.');
             return false;
         }
 
@@ -121,7 +121,7 @@ angular.module('myApp')
         if (harvestedIng[0].inv_quantity >= ingQty) {
             return true;
         } else {
-            console.log(ingName, ': ', ingQty, ' needed, ', harvestedIng[0].inv_quantity, ' harvested.');
+            // console.log(ingName, ': ', ingQty, ' needed, ', harvestedIng[0].inv_quantity, ' harvested.');
             return false;
         }
     }

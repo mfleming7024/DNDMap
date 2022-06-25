@@ -148,7 +148,7 @@ header .fa-hat-wizard.enabled {
   overflow: auto;
 }
 
-.bag-garden-item {
+.bag-garden-item, .potion {
   width: 400;
   min-height: 250px;
   border-radius: 15px;
@@ -167,6 +167,20 @@ header .fa-hat-wizard.enabled {
 .rare {border-color: blue;}
 .uncommon {border-color: green;}
 .common {border-color: black;}
+
+.potion-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 30px;
+  overflow: auto;
+  background-color: gray;
+}
+
+.potion {
+
+}
 
 .bag-garden-item header {
   display: flex;
