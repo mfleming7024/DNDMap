@@ -10,12 +10,14 @@
     "angular-loader": "^1.7.5",
     "angular-route": "^1.7.5",
     "angular-simple-logger": "^0.1.7",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "feather-icons": "^4.21.0",
     "forever": "^1.0.0",
     "html5-boilerplate": "0.0.1",
     "leaflet": "^1.8",
     "mongodb": "^3.2.7",
+    "teseract": "^2.12.0",
     "ui-leaflet": "^1.0.3"
   },
   "devDependencies": {
@@ -26,7 +28,7 @@
   },
   "scripts": {
     "postinstall": "npm run copy-libs",
-    "send-to-server": "mkdir dist && mv app css img js templates index.html mongo.js package.json dist/",
+    "send-to-server": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/ && scp -r dist/* mikel@142.93.15.233:/var/www/dndmap.com/html",
     "update-deps": "npm update",
     "postupdate-deps": "npm run copy-libs",
     "copy-libs": "cpx \"node_modules/{angular,angular-*,html5-boilerplate/dist}/**/*\" app/lib -C",

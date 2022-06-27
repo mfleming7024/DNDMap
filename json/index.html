@@ -1,0 +1,47 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<input type="file" onchange="readText(event)" />
+		<script>
+			async function readText(event) {
+				const file = event.target.files.item(0)
+				let text = await file.text();
+				
+				text = JSON.parse(text);
+
+				// File Name
+				console.log(text);
+				let final = "";
+
+				// Format data
+				for (let i = 0; i < text.features.length; i++) {
+					let latitude = text.features[i].geometry.coordinates[0];
+					let longitude = text.features[i].geometry.coordinates[1];
+
+					let obj = {
+						mapName: "faerun",
+						mock: true,
+						type: "capital",
+						label: text.features[i].properties.name,
+						coords: {
+							lat: latitude,
+							lng: longitude
+						}
+					}
+
+					if (i == text.features.length - 1) {
+						final += JSON.stringify(obj);
+					} else {
+						final += JSON.stringify(obj) + ",";
+					}
+
+					console.log(obj);
+				}
+
+				console.log(final);
+
+			}
+		</script>
+	</body>
+</html>

@@ -32,9 +32,10 @@ angular.module('myApp')
 		readjustMap(ev, layer);
     });
 
-    // function faerunToOne(from, to) {
-    // 	this.splice(to, 0, this.splice(from, 1)[0]);
-    // }
+	// Search functionality
+	// Have a stored list of all the map locations
+	// Fuzzy search based off of that. 
+	// Make mongo call to get that point, fly to the coords
 
 	$scope.togglePotionLab = function() {
 		if ($scope.godMode) {

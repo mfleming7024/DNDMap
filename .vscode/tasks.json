@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "send-to-server",
+			"problemMatcher": [],
+			"label": "npm: send-to-server",
+			"detail": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
