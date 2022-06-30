@@ -107,6 +107,19 @@ app.put('/mongo/addPlant/:plantName', cors(), (req, res) => {
     );
 });
 
+app.put('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
+    db.collection('points').insertOne(
+        {}
+        , function (err, docs) {
+            if (err) {
+                res.status(400).send("Unable to add point to the db");
+            } else {
+                res.send(docs);
+            }
+        }
+    );
+});
+
 app.put('/mongo/addDay/', cors(), (req, res) => {
     db.collection('plants').updateMany(
         {quantity: {$gt : 0}},

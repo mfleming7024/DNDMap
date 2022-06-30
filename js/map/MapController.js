@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp')
-.controller('mainController', ['$scope', 'MongoURLService', 'IngredientsService', function($scope, MongoURLService, IngredientsService) {
+.controller('mainController', ['$scope', 'MongoURLService', 'IngredientsService', 'leafletData', function($scope, MongoURLService, IngredientsService, leafletData) {
 
 	angular.extend($scope, {
 		defaults: {crs: 'Simple'},
@@ -10,59 +10,138 @@ angular.module('myApp')
 			northEast: {},
 			southWest: {}
 		},
-		paths: {},
-		markers: {},
+		paths: [],
+		markers: [],
 		layers: {
 			baselayers: {},
 			overlays: {}
 		},
 		events: {
             map: {
-                enable: ['click','baselayerchange', 'contextmenu'],
+                enable: ['click','baselayerchange','contextmenu'],
                 logic: 'emit'
             }
         }
 	});
 
+	// indexing options for fuse
+	var options = { 
+		keys: ['message'], 
+		includeScore: true
+	};
+	var fuse,
+		newMarkerIndex = 1;
+
 	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
-        console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
+		// if (!godMode) {
+			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
+			// return;
+		// }
+
+		var marker = {
+			lat: layer.leafletEvent.latlng.lat,
+			lng: layer.leafletEvent.latlng.lng,
+			unverified: true,
+			draggable: true,
+			message: 'marker '+newMarkerIndex,
+			icon: {
+				type: 'awesomeMarker',
+				prefix: 'fa',
+				icon: 'poi',
+				markerColor: 'blue'
+			},
+			layer: 'poi' 
+		}
+
+		// Push dummy marker to the map
+		$scope.markers.push(marker);
+
+		// Identify the number of unverified markers to show on the view
+		$scope.unverified = getUnverifiedMarkers().length;
     });
+
+	var getUnverifiedMarkers = function() {
+		// Parse number of unverified markers in array
+		var unverified = $scope.markers.filter(function(item){
+			return item.unverified == true;
+		})
+
+		return unverified;
+	}
+
+	$scope.finalize = function() {
+		var unverified = getUnverifiedMarkers();
+
+		// go through each unverified point and add it 
+		unverified.forEach(function(item){
+			var answer = prompt("What's the name of the point?", item.message);
+			item.message = answer;
+			console.log(item);
+			// MongoURLService.addPoint().then(function(response){
+			// 	console.log('AddDay: ', response);
+			// 	if (response.status == 200) {
+			// 		// add day visually
+			// 		$scope.plants.forEach(function(item){
+			// 			if (item.quantity > 0)
+			// 				item.timeToHarvest++;
+			// 		})
+			// 	}
+			// })
+		});
+	}
 
     $scope.$on('leafletDirectiveMap.map.baselayerchange', function(ev, layer) {
 		readjustMap(ev, layer);
     });
 
-	// Search functionality
-	// Have a stored list of all the map locations
-	// Fuzzy search based off of that. 
-	// Make mongo call to get that point, fly to the coords
+	// Toggle visibility of the search modal
+	$scope.toggleSearchModal = function() {
+		$scope.searchThing = "";
+		$scope.displaySearchModal = !$scope.displaySearchModal;
+	}
 
-	$scope.togglePotionLab = function() {
+	// On Change function for searching things
+	$scope.search = function(thing) {
+		console.log(thing, $scope.results);
+		$scope.results = fuse.search(thing);
+	}
+
+	$scope.flyTo = function(latitude, longitude) {
+		leafletData.getMap('map').then(function(mapRef) {
+			$scope.toggleSearchModal();
+			mapRef.flyTo({lat: latitude, lng: longitude});
+		});
+	}
+
+	var counter = 0;
+	$scope.enableGodMode = function() {
 		if ($scope.godMode) {
-			$scope.showPotionLab = !$scope.showPotionLab;
+			return;
+		} else if (counter > 1) {
+			$scope.godMode = true;
 		} else {
-			var answer = prompt("Are ye worthy?", "enter code");
-			if (answer == "7024") {
+			counter++;
+		}
+	}
+
+	$scope.toggleOverlay = function(overlayName) {
+		if (!$scope.godMode) {
+			return;
+		}
+
+		switch (overlayName) {
+			case 'potion':
 				$scope.showPotionLab = !$scope.showPotionLab;
-				$scope.godMode = true;
-			}
-		}
-	}
-
-	$scope.toggleGarden = function() {
-		if ($scope.godMode) {
-			$scope.showGarden = !$scope.showGarden;
-		} else {
-			var answer = prompt("Are ye worthy?", "enter code");
-			if (answer == "7024") {
+				break;
+			case 'garden':
 				$scope.showGarden = !$scope.showGarden;
-				$scope.godMode = true;
-			}
+				break;
+			default:
+				break;
 		}
-		
 	}
 
-	$scope.loadMaps = function() {
+	var loadMaps = function() {
 		MongoURLService.getMaps().then(function(data){
 
 			// Grab faerun map data and move it to the front of the list
@@ -112,14 +191,14 @@ angular.module('myApp')
 			};
 
 			$scope.mapName = faerun[0].mapActual;
-			$scope.loadPaths(faerun[0].mapName);
-			$scope.loadMarkers(faerun[0].mapName);
+			loadPaths(faerun[0].mapName);
+			loadMarkers(faerun[0].mapName);
 		});
 		loadPlants();
 		loadPotions();
 	}
 
-	$scope.loadMarkers = function(mapName) {
+	var loadMarkers = function(mapName) {
 		MongoURLService.getMarkers(mapName).then(function(response){
 			console.log('GetMarkers: (',mapName,')', response);
 			if (angular.isDefined(response.data) && response.data.length !== 0) {
@@ -133,9 +212,12 @@ angular.module('myApp')
 					'shopping-cart': "yellow"
 				}
 
+				$scope.markers = [];
+
 				for (var i = 0; i < resData.length; ++i)
 					if (resData[i] !== undefined)
-						$scope.markers[i] = {
+
+						$scope.markers.push({
 							lat: resData[i].coords.lat,
 							lng: resData[i].coords.lng,
 							message: resData[i].label,
@@ -146,8 +228,9 @@ angular.module('myApp')
 			                    markerColor: colors[resData[i].type] || 'green'
 							},
 							layer: resData[i].type !== undefined ? resData[i].type : 'poi' 
-						}
+						});
 
+				console.log($scope.markers);
 				var addedOverlays = ['poi', 'city', 'user', 'shopping-cart'];
 
 				for (var i=0; i<addedOverlays.length;i++) {
@@ -164,13 +247,14 @@ angular.module('myApp')
 					});
 				}
 
+				// initialize Fuse with the index
+				fuse = new Fuse($scope.markers, options)
 			}
 			
 		});
 	}
 
-	// TODO: Make this more dynamic than only supporting 'our journey'
-	$scope.loadPaths = function(mapName) {
+	var loadPaths = function(mapName) {
 		MongoURLService.getPaths(mapName).then(function(response){
 			console.log('GetPaths: (',mapName,')',response);
 			if (angular.isDefined(response.data[0])) {
@@ -180,7 +264,7 @@ angular.module('myApp')
 					var key = 'path'+i;
 					$scope.paths[key] = {
 						color: resData.color,
-						weight: 3,
+						weight: 5,
 						latlngs: resData.coords,
 						layer: key
 					} 
@@ -224,10 +308,10 @@ angular.module('myApp')
 		$scope.markers = {};
 		$scope.paths = {};
 
-		$scope.loadPaths(nameIdx);
-		$scope.loadMarkers(nameIdx);
+		loadPaths(nameIdx);
+		loadMarkers(nameIdx);
 	}
 
-	$scope.loadMaps();
+	loadMaps();
 
 }]);

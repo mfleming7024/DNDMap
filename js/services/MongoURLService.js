@@ -94,6 +94,19 @@ angular.module('myApp')
         return def.promise;
 	}
 
+	this.addPoint = function(mapName, pointName, lat, lng) {
+		var def = $q.defer();
+
+		$http.put('http://mikelmaps.com/mongo/addPoint/'+mapName+'/'+pointName+'/'+lat+'/'+lng)
+			.then(function(data) {
+	            def.resolve(data);
+	        },function(error){
+	        	def.reject("Failed to add ", pointName, " to ", mapName,".");
+	        });
+
+        return def.promise;
+	}
+
 	this.addDay = function() {
 		var def = $q.defer();
 

@@ -1,5 +1,5 @@
 node_modules
 ._*
-app/lib/*
 package-lock.json
 dist/
+app/

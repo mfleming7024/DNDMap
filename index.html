@@ -4,13 +4,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>DND Map App</title>
-  <meta name="description" content="">
+  <meta name="description" content="Test Mapping Application for DND">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="node_modules/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="node_modules/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
   <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css?family=Alegreya:700&display=swap" rel="stylesheet">
@@ -20,16 +19,16 @@
 </head>
 <body ng-controller="mainController">
   <header>
-    <i class="fas fa-map"></i><h1 id="map-name">Map of {{mapName}}</h1>
+    <i class="fas fa-map" ng-click="enableGodMode();"></i><h1 id="map-name">Map of {{mapName}}</h1>
     <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr" target="_blank">
       <i class="fas fa-microphone"></i>
     </a>
-    <i class="pull-right fas fa-flask" ng-class="{'green': godMode}" ng-click="togglePotionLab();"></i>
-    <i class="pull-right fas fa-seedling" ng-class="{'green': godMode}" ng-click="toggleGarden();"></i>
+    <i class="pull-right fas fa-flask" ng-class="{'green': godMode}" ng-click="toggleOverlay('potion');"></i>
+    <i class="pull-right fas fa-seedling" ng-class="{'green': godMode}" ng-click="toggleOverlay('garden');"></i>
+    <i class="pull-right fas fa-search" ng-click="toggleSearchModal();"></i>
   </header>
 
-
-
+  <!-- Map Container -->
   <leaflet id="map" 
     defaults="defaults" 
     maxBounds="maxBounds" 
@@ -50,30 +49,23 @@
     <ng-include src="'./templates/druidbag.html'"></ng-include>
   </div>
 
- <!--  <div>Defaults: {{defaults}}</div>
-  <br /> -->
-  <!-- <div>MaxBounds: {{maxBounds}}</div>
-  <input type="number" ng-model="maxBounds.northEast.lat" />
-  <input type="number" ng-model="maxBounds.northEast.lng" />
-  <br />
-  <div>Center: {{center}}</div>
-  <input type="number" ng-model="center.lat" />
-  <input type="number" ng-model="center.lng" />
-  <br />
-  <div>Bounds: {{bounds}}</div>
-  <input type="number" ng-model="bounds.northEast.lat" />
-  <input type="number" ng-model="bounds.northEast.lng" />
-  <br /> -->
-<!--   <div>Markers: {{markers}}</div>
-  <br /> -->
-  <!-- <div>Layers: {{layers.overlays}}</div>
-  <br /> -->
- <!--  <div>Paths: {{paths}}</div>
-  <br /> -->
+  <!-- Searh Modal -->
+  <div class="modal" ng-class="{'hide': !displaySearchModal}">
+    <i class="fa fa-times-circle-o" ng-click="toggleSearchModal()"></i>
+    <div class="header">Search</div>
+    <div class="body">
+      <input class="search" type="text" ng-model="searchThing" ng-change="search(searchThing)" placeholder="e.g. Waterdeep"/>
+      <div class="search__result" ng-repeat="result in results" ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">{{result.item.message}}</div>
+    </div>
+  </div>
+
+  <!-- Add Fab Button -->
+  <button class="fb" ng-click="finalize()" type="button" ng-if="unverified">+<span style="color: green;">{{unverified}}</span></button>
 
   <script src="node_modules/angular/angular.js"></script>
   <script type="text/javascript" src="node_modules/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
   <script type="text/javascript" src="node_modules/ui-leaflet/dist/ui-leaflet.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/services/MongoURLService.js"></script>
   <script type="text/javascript" src="js/services/IngredientsService.js"></script>
