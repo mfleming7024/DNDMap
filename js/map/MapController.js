@@ -29,21 +29,20 @@ angular.module('myApp')
 		keys: ['message'], 
 		includeScore: true
 	};
-	var fuse,
-		newMarkerIndex = 1;
+	var fuse;
 
 	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
 		// if (!godMode) {
 			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
 			// return;
 		// }
+		var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
 
 		var marker = {
 			lat: layer.leafletEvent.latlng.lat,
 			lng: layer.leafletEvent.latlng.lng,
 			unverified: true,
-			draggable: true,
-			message: 'marker '+newMarkerIndex,
+			message: markerName,
 			icon: {
 				type: 'awesomeMarker',
 				prefix: 'fa',
@@ -74,19 +73,11 @@ angular.module('myApp')
 
 		// go through each unverified point and add it 
 		unverified.forEach(function(item){
-			var answer = prompt("What's the name of the point?", item.message);
-			item.message = answer;
 			console.log(item);
-			// MongoURLService.addPoint().then(function(response){
-			// 	console.log('AddDay: ', response);
-			// 	if (response.status == 200) {
-			// 		// add day visually
-			// 		$scope.plants.forEach(function(item){
-			// 			if (item.quantity > 0)
-			// 				item.timeToHarvest++;
-			// 		})
-			// 	}
-			// })
+
+			MongoURLService.addPoint($scope.mapName, item.message,item.lat,item.lng).then(function(response){
+				console.log('AddPoint: ', response);
+			})
 		});
 	}
 
