@@ -10,8 +10,8 @@ angular.module('myApp')
 			northEast: {},
 			southWest: {}
 		},
-		paths: [],
-		markers: [],
+		paths: {},	
+		markers: {},
 		layers: {
 			baselayers: {},
 			overlays: {}
@@ -37,6 +37,11 @@ angular.module('myApp')
 			// return;
 		// }
 		var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
+
+		// Don't proceed if no marker name
+		if (!markerName) {
+			return;
+		}
 
 		var marker = {
 			lat: layer.leafletEvent.latlng.lat,
@@ -73,12 +78,13 @@ angular.module('myApp')
 
 		// go through each unverified point and add it 
 		unverified.forEach(function(item){
-			console.log(item);
-
-			MongoURLService.addPoint($scope.mapName, item.message,item.lat,item.lng).then(function(response){
+			MongoURLService.addPoint($scope.mapName.toLowerCase(), item.message, Number(item.lat), Number(item.lng)).then(function(response){
 				console.log('AddPoint: ', response);
+				item.unverified = false;
 			})
 		});
+
+		$scope.unverified = getUnverifiedMarkers().length;
 	}
 
     $scope.$on('leafletDirectiveMap.map.baselayerchange', function(ev, layer) {
@@ -221,7 +227,6 @@ angular.module('myApp')
 							layer: resData[i].type !== undefined ? resData[i].type : 'poi' 
 						});
 
-				console.log($scope.markers);
 				var addedOverlays = ['poi', 'city', 'user', 'shopping-cart'];
 
 				for (var i=0; i<addedOverlays.length;i++) {

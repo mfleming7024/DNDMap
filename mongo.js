@@ -109,8 +109,15 @@ app.put('/mongo/addPlant/:plantName', cors(), (req, res) => {
 
 app.put('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
     db.collection('points').insertOne(
-        {}
-        , function (err, docs) {
+        {
+            coords: {
+                lat: Number(req.params.lat),
+                lng: Number(req.params.lng),
+            },
+            type: "city",
+            label: req.params.pointName,
+            mapName: req.params.mapName,
+        }, function (err, docs) {
             if (err) {
                 res.status(400).send("Unable to add point to the db");
             } else {
