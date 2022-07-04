@@ -274,22 +274,22 @@ header .fa-hat-wizard.enabled {
 
 /* Modal Styling */
 .modal {
-  position: relative;
+  display: none;
   width: 80%;
   max-width: 300px;
   position: absolute;
   top: 20%;
   left: calc(50% - 150px);
   z-index: 1000;
-  background: white;
+  background: lightgray;
   border: 2px solid black;
   border-radius: 4px;
   padding: 10px;
   box-shadow: black 0px 7px 69px 20px;
 }
 
-.modal.hide {
-  display: none;
+.modal.show {
+  display: block;
 }
 
 .modal .header {
@@ -329,7 +329,7 @@ header .fa-hat-wizard.enabled {
   font-weight: bold;
 }
 
-.fb {
+.floatingButton {
   position: fixed;
   right: 50px;
   bottom: 50px;
@@ -346,6 +346,6 @@ header .fa-hat-wizard.enabled {
   transition: background-color 0.5s;
 }
 
-.fa:hover {
+.floatingButton:hover {
   background-color: darkgray;
 }

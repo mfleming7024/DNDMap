@@ -20,9 +20,18 @@ angular.module('myApp')
             map: {
                 enable: ['click','baselayerchange','contextmenu'],
                 logic: 'emit'
-            }
+            },
+			path: {
+				enable: ['click', 'mouseover', 'mouseout', 'contextmenu'],
+                logic: 'emit'
+			}
         }
 	});
+
+
+	/*TODO
+	* - Move plants and potions to their own controllers, 
+	*/
 
 	// indexing options for fuse
 	var options = { 
@@ -31,39 +40,8 @@ angular.module('myApp')
 	};
 	var fuse;
 
-	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
-		// if (!godMode) {
-			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
-			// return;
-		// }
-		var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
 
-		// Don't proceed if no marker name
-		if (!markerName) {
-			return;
-		}
-
-		var marker = {
-			lat: layer.leafletEvent.latlng.lat,
-			lng: layer.leafletEvent.latlng.lng,
-			unverified: true,
-			message: markerName,
-			icon: {
-				type: 'awesomeMarker',
-				prefix: 'fa',
-				icon: 'poi',
-				markerColor: 'blue'
-			},
-			layer: 'poi' 
-		}
-
-		// Push dummy marker to the map
-		$scope.markers.push(marker);
-
-		// Identify the number of unverified markers to show on the view
-		$scope.unverified = getUnverifiedMarkers().length;
-    });
-
+	// Return a list of filtered markers that are unverified
 	var getUnverifiedMarkers = function() {
 		// Parse number of unverified markers in array
 		var unverified = $scope.markers.filter(function(item){
@@ -73,6 +51,7 @@ angular.module('myApp')
 		return unverified;
 	}
 
+	// Finalize and send data for unverified markers once data filled in
 	$scope.finalize = function() {
 		var unverified = getUnverifiedMarkers();
 
@@ -87,10 +66,7 @@ angular.module('myApp')
 		$scope.unverified = getUnverifiedMarkers().length;
 	}
 
-    $scope.$on('leafletDirectiveMap.map.baselayerchange', function(ev, layer) {
-		readjustMap(ev, layer);
-    });
-
+	$scope.displaySearchModal = false;
 	// Toggle visibility of the search modal
 	$scope.toggleSearchModal = function() {
 		$scope.searchThing = "";
@@ -99,10 +75,10 @@ angular.module('myApp')
 
 	// On Change function for searching things
 	$scope.search = function(thing) {
-		console.log(thing, $scope.results);
 		$scope.results = fuse.search(thing);
 	}
 
+	// Smooth pan the map to specified coords
 	$scope.flyTo = function(latitude, longitude) {
 		leafletData.getMap('map').then(function(mapRef) {
 			$scope.toggleSearchModal();
@@ -260,9 +236,12 @@ angular.module('myApp')
 					var key = 'path'+i;
 					$scope.paths[key] = {
 						color: resData.color,
+						pathName: resData.pathName,
 						weight: 5,
 						latlngs: resData.coords,
-						layer: key
+						bubblingMouseEvents: false,
+						layer: key,
+						message: resData.pathName
 					} 
 
 					$scope.layers.overlays[key] = {
@@ -307,6 +286,61 @@ angular.module('myApp')
 		loadPaths(nameIdx);
 		loadMarkers(nameIdx);
 	}
+
+	// Map Events
+	$scope.$on('leafletDirectiveMap.map.baselayerchange', function(ev, layer) {
+		readjustMap(ev, layer);
+    });
+
+	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
+		// if (!godMode) {
+			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
+			// return;
+		// }
+		var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
+
+		// Don't proceed if no marker name
+		if (!markerName) {
+			return;
+		}
+
+		var marker = {
+			lat: layer.leafletEvent.latlng.lat,
+			lng: layer.leafletEvent.latlng.lng,
+			unverified: true,
+			message: markerName,
+			icon: {
+				type: 'awesomeMarker',
+				prefix: 'fa',
+				icon: 'poi',
+				markerColor: 'blue'
+			},
+			layer: 'poi' 
+		}
+
+		// Push dummy marker to the map
+		$scope.markers.push(marker);
+
+		// Identify the number of unverified markers to show on the view
+		$scope.unverified = getUnverifiedMarkers().length;
+    });
+
+	// Path Events (mouse over and mouse out)
+	$scope.$on('leafletDirectivePath.map.mouseover', function(event, layer){
+		// find scope path object and change it's color and weight when clicked
+		var pathClicked = layer.leafletEvent.target.options.layer;
+
+		// Change Path color and weight while hovering
+		$scope.paths[pathClicked].weight = 8;
+	})
+
+	$scope.$on('leafletDirectivePath.map.mouseout', function(event, layer){
+		// find scope path object and change it's color and weight when clicked
+		var pathClicked = layer.leafletEvent.target.options.layer;
+
+		// Change Path weight while hovering
+		$scope.paths[pathClicked].weight = 5;
+	})
 
 	loadMaps();
 
