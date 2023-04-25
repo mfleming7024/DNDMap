@@ -23,8 +23,8 @@
     <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr" target="_blank">
       <i class="fas fa-microphone"></i>
     </a>
-    <i class="pull-right fas fa-flask" ng-class="{'green': godMode}" ng-click="toggleOverlay('potion');"></i>
-    <i class="pull-right fas fa-seedling" ng-class="{'green': godMode}" ng-click="toggleOverlay('garden');"></i>
+    <i class="pull-right fas fa-flask" ng-if="godMode" ng-click="toggleOverlay('potion');"></i>
+    <i class="pull-right fas fa-seedling" ng-if="godMode" ng-click="toggleOverlay('garden');"></i>
     <i class="pull-right fas fa-search" ng-click="toggleSearchModal();"></i>
   </header>
 
