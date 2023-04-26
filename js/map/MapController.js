@@ -28,11 +28,6 @@ angular.module('myApp')
         }
 	});
 
-
-	/*TODO
-	* - Move plants and potions to their own controllers, 
-	*/
-
 	// indexing options for fuse
 	var options = { 
 		keys: ['message'], 
@@ -49,21 +44,6 @@ angular.module('myApp')
 		})
 
 		return unverified;
-	}
-
-	// Finalize and send data for unverified markers once data filled in
-	$scope.finalize = function() {
-		var unverified = getUnverifiedMarkers();
-
-		// go through each unverified point and add it 
-		unverified.forEach(function(item){
-			MongoURLService.addPoint($scope.mapName.toLowerCase(), item.message, Number(item.lat), Number(item.lng)).then(function(response){
-				console.log('AddPoint: ', response);
-				item.unverified = false;
-			})
-		});
-
-		$scope.unverified = getUnverifiedMarkers().length;
 	}
 
 	$scope.displaySearchModal = false;
@@ -293,10 +273,8 @@ angular.module('myApp')
     });
 
 	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
-		// if (!godMode) {
-			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
-			// return;
-		// }
+		console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
+		
 		var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
 
 		// Don't proceed if no marker name
@@ -321,8 +299,10 @@ angular.module('myApp')
 		// Push dummy marker to the map
 		$scope.markers.push(marker);
 
-		// Identify the number of unverified markers to show on the view
-		$scope.unverified = getUnverifiedMarkers().length;
+		// Push dummy marker to the database
+		MongoURLService.addPoint($scope.mapName.toLowerCase(), markerName, marker.lat, marker.lng).then(function (response) {
+			console.log('AddMarker:', response);
+		});
     });
 
 	// Path Events (mouse over and mouse out)
