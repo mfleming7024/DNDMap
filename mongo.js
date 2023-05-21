@@ -76,7 +76,7 @@ app.get('/mongo/getPlants/', cors(), (req, res) => {
     });
 });
 
-app.put('/mongo/harvestPlant/:plantName/:harvestedAmount', cors(), (req, res) => {
+app.post('/mongo/harvestPlant/:plantName/:harvestedAmount', cors(), (req, res) => {
     db.collection('plants').updateOne(
         {name: req.params.plantName},
         {
@@ -92,7 +92,7 @@ app.put('/mongo/harvestPlant/:plantName/:harvestedAmount', cors(), (req, res) =>
     );
 });
 
-app.put('/mongo/addPlant/:plantName', cors(), (req, res) => {
+app.post('/mongo/addPlant/:plantName', cors(), (req, res) => {
     db.collection('plants').updateOne(
         {name: req.params.plantName},
         {
@@ -107,7 +107,7 @@ app.put('/mongo/addPlant/:plantName', cors(), (req, res) => {
     );
 });
 
-app.put('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
+app.post('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
     db.collection('points').insertOne(
         {
             coords: {
@@ -127,7 +127,7 @@ app.put('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
     );
 });
 
-app.put('/mongo/addDay/', cors(), (req, res) => {
+app.post('/mongo/addDay/', cors(), (req, res) => {
     db.collection('plants').updateMany(
         {quantity: {$gt : 0}},
         {$inc:

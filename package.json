@@ -27,12 +27,7 @@
     "jasmine-core": "^3.3.0"
   },
   "scripts": {
-    "postinstall": "npm run copy-libs",
     "send-to-server": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/ && scp -r dist/* mikel@142.93.15.233:/var/www/dndmap.com/html",
-    "update-deps": "npm update",
-    "postupdate-deps": "npm run copy-libs",
-    "copy-libs": "cpx \"node_modules/{angular,angular-*,html5-boilerplate/dist}/**/*\" app/lib -C",
-    "start": "http-server -a localhost -p 8000 -c-1 ./app",
-    "test": "karma start karma.conf.js"
+    "start": "http-server -a localhost -p 8000 -c-1 ./app"
   }
 }
