@@ -35,17 +35,6 @@ angular.module('myApp')
 	};
 	var fuse;
 
-
-	// Return a list of filtered markers that are unverified
-	var getUnverifiedMarkers = function() {
-		// Parse number of unverified markers in array
-		var unverified = $scope.markers.filter(function(item){
-			return item.unverified == true;
-		})
-
-		return unverified;
-	}
-
 	$scope.displaySearchModal = false;
 	// Toggle visibility of the search modal
 	$scope.toggleSearchModal = function() {
@@ -174,6 +163,7 @@ angular.module('myApp')
 							lat: resData[i].coords.lat,
 							lng: resData[i].coords.lng,
 							message: resData[i].label,
+							opacity: 0.6,
 							icon: {
 								type: 'awesomeMarker',
 								prefix: 'fa',
@@ -273,36 +263,37 @@ angular.module('myApp')
     });
 
 	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
-		console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
-		
-		var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
+		if ($scope.godMode) {
+			var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
 
-		// Don't proceed if no marker name
-		if (!markerName) {
-			return;
+			// Don't proceed if no marker name
+			if (!markerName) {
+				return;
+			}
+
+			var marker = {
+				lat: layer.leafletEvent.latlng.lat,
+				lng: layer.leafletEvent.latlng.lng,
+				message: markerName,
+				icon: {
+					type: 'awesomeMarker',
+					prefix: 'fa',
+					icon: 'poi',
+					markerColor: 'blue'
+				},
+				layer: 'poi'
+			}
+
+			// Push dummy marker to the map
+			$scope.markers.push(marker);
+
+			// Push dummy marker to the database
+			MongoURLService.addPoint($scope.mapName.toLowerCase(), markerName, marker.lat, marker.lng).then(function (response) {
+				console.log('AddMarker:', response);
+			});
+		} else {
+			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
 		}
-
-		var marker = {
-			lat: layer.leafletEvent.latlng.lat,
-			lng: layer.leafletEvent.latlng.lng,
-			unverified: true,
-			message: markerName,
-			icon: {
-				type: 'awesomeMarker',
-				prefix: 'fa',
-				icon: 'poi',
-				markerColor: 'blue'
-			},
-			layer: 'poi' 
-		}
-
-		// Push dummy marker to the map
-		$scope.markers.push(marker);
-
-		// Push dummy marker to the database
-		MongoURLService.addPoint($scope.mapName.toLowerCase(), markerName, marker.lat, marker.lng).then(function (response) {
-			console.log('AddMarker:', response);
-		});
     });
 
 	// Path Events (mouse over and mouse out)

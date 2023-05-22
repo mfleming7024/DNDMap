@@ -6,7 +6,7 @@ angular.module('myApp')
 	this.getMaps = function(mapName) {
 		var def = $q.defer();
 
-		$http.get('http://mikelmaps.com/mongo/getMaps/')
+		$http.get('http://www.mikelmaps.com/mongo/getMaps/')
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -19,7 +19,7 @@ angular.module('myApp')
 	this.getPaths = function(mapName) {
 		var def = $q.defer();
 
-		$http.get('http://mikelmaps.com/mongo/getPaths/'+mapName)
+		$http.get('http://www.mikelmaps.com/mongo/getPaths/'+mapName)
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -32,7 +32,7 @@ angular.module('myApp')
 	this.getMarkers = function(mapName) {
 		var def = $q.defer();
 
-		$http.get('http://mikelmaps.com/mongo/getPoints/'+mapName)
+		$http.get('http://www.mikelmaps.com/mongo/getPoints/'+mapName)
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -45,7 +45,7 @@ angular.module('myApp')
 	this.getPotions = function() {
 		var def = $q.defer();
 
-		$http.get('http://mikelmaps.com/mongo/getPotions/')
+		$http.get('http://www.mikelmaps.com/mongo/getPotions/')
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -58,7 +58,7 @@ angular.module('myApp')
 	this.getPlants = function() {
 		var def = $q.defer();
 
-		$http.get('http://mikelmaps.com/mongo/getPlants/')
+		$http.get('http://www.mikelmaps.com/mongo/getPlants/')
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -71,7 +71,7 @@ angular.module('myApp')
 	this.incrementPlant = function(plant) {
 		var def = $q.defer();
 
-		$http.put('http://mikelmaps.com/mongo/addPlant/'+plant)
+		$http.post('http://www.mikelmaps.com/mongo/addPlant/'+plant)
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -84,7 +84,7 @@ angular.module('myApp')
 	this.harvestPlant = function(plant, amount) {
 		var def = $q.defer();
 
-		$http.put('http://mikelmaps.com/mongo/harvestPlant/'+plant+'/'+amount)
+		$http.post('http://www.mikelmaps.com/mongo/harvestPlant/'+plant+'/'+amount)
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -97,7 +97,7 @@ angular.module('myApp')
 	this.addPoint = function(mapName, pointName, lat, lng) {
 		var def = $q.defer();
 
-		$http.put('http://mikelmaps.com/mongo/addPoint/'+mapName+'/'+pointName+'/'+lat+'/'+lng)
+		$http.post('http://www.mikelmaps.com/mongo/addPoint/'+mapName+'/'+pointName+'/'+lat+'/'+lng)
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){
@@ -110,7 +110,7 @@ angular.module('myApp')
 	this.addDay = function() {
 		var def = $q.defer();
 
-		$http.put('http://mikelmaps.com/mongo/addDay/')
+		$http.post('http://www.mikelmaps.com/mongo/addDay/')
 			.then(function(data) {
 	            def.resolve(data);
 	        },function(error){

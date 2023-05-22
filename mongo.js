@@ -5,6 +5,11 @@ const cors = require('cors');
 const app = express();
 let db = null;
 
+app.use(cors({
+    origin: 'http://www.mikelmaps.com',
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT']
+}));
+
 app.get('/mongo/getMap/:mapName', cors(), (req, res) => {
 	db.collection('maps').find({mapName: req.params.mapName}).toArray(function(err, docs){
         if (err) {
