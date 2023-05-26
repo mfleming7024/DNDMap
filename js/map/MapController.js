@@ -20,7 +20,11 @@ angular.module('myApp')
             map: {
                 enable: ['click','baselayerchange','contextmenu'],
                 logic: 'emit'
-            },
+			},
+			marker: {
+				enable: ['click', 'dragend', 'contextmenu'],
+				logic: 'emit'
+			},
 			path: {
 				enable: ['click', 'mouseover', 'mouseout', 'contextmenu'],
                 logic: 'emit'
@@ -146,7 +150,6 @@ angular.module('myApp')
 			if (angular.isDefined(response.data) && response.data.length !== 0) {
 				var resData = response.data;	
 
-				// Colors table for marker color designation
 				var colors = {
 					poi: "red",
 					city: "blue",
@@ -158,7 +161,6 @@ angular.module('myApp')
 
 				for (var i = 0; i < resData.length; ++i)
 					if (resData[i] !== undefined)
-
 						$scope.markers.push({
 							lat: resData[i].coords.lat,
 							lng: resData[i].coords.lng,
@@ -208,6 +210,7 @@ angular.module('myApp')
 						color: resData.color,
 						pathName: resData.pathName,
 						weight: 5,
+						opacity: 0.6,
 						latlngs: resData.coords,
 						bubblingMouseEvents: false,
 						layer: key,
@@ -260,7 +263,7 @@ angular.module('myApp')
 	// Map Events
 	$scope.$on('leafletDirectiveMap.map.baselayerchange', function(ev, layer) {
 		readjustMap(ev, layer);
-    });
+	});
 
 	$scope.$on('leafletDirectiveMap.map.click', function(event, layer){
 		if ($scope.godMode) {
@@ -294,23 +297,126 @@ angular.module('myApp')
 		} else {
 			console.log('{"lat":'+layer.leafletEvent.latlng.lat.toFixed(3)+', "lng":'+layer.leafletEvent.latlng.lng.toFixed(3)+'}');
 		}
-    });
+	});
+		
+	$scope.$on('leafletDirectiveMarker.map.contextmenu', function (event, layer) {
+		if (!$scope.godMode) {
+			return;
+		}
 
-	// Path Events (mouse over and mouse out)
+		var matchingMarker = $scope.markers.filter(function (marker) { return marker.message == layer.model.message })[0];
+
+		matchingMarker.icon = {
+			type: 'awesomeMarker',
+			prefix: 'fa',
+			icon: 'arrows',
+			markerColor: 'red'
+		}
+		matchingMarker.draggable = true;
+	});
+
+	$scope.$on('leafletDirectiveMarker.map.dragstart', function (event, layer) {
+		// set the active marker
+		$scope.activeMarker = layer.model;
+		$scope.activeMarker.oldLat = layer.model.lat;
+		$scope.activeMarker.oldLng = layer.model.lng;
+	});
+
+	$scope.$on('leafletDirectiveMarker.map.dragend', function (event, layer) {
+		if (!$scope.godMode) {
+			return;
+		}
+		if ($scope.activePath) {
+			// updating the active path lat / lng for the moved marker
+			var matchingLatLng = $scope.activePath.latlngs.filter(function (latlng) { return latlng.lat == $scope.activeMarker.oldLat && latlng.lng == $scope.activeMarker.oldLng })[0];
+			matchingLatLng.lat = layer.model.lat;
+			matchingLatLng.lng = layer.model.lng;
+
+			// grab the new lat/lng with it's index and update the database
+			var newLat = layer.model.lat;
+			var newLng = layer.model.lng;
+			var pathName = $scope.activePath.pathName;
+			var latIdx = $scope.activePath.latlngs.indexOf(matchingLatLng);
+
+
+			MongoURLService.updatePathPoint($scope.mapName.toLowerCase(), pathName, latIdx, newLat, newLng).then(function (response) {
+				console.log('UpdatePathPoint:', response);
+			});
+
+		} else {
+			// find matching marker in scope.markers
+			var matchingMarker = $scope.markers.filter(function (marker) { return marker.message == layer.model.message })[0];
+
+			// revert icon to 'non-moveable' icon
+			matchingMarker.icon = {
+				type: 'awesomeMarker',
+				prefix: 'fa',
+				icon: 'poi',
+				markerColor: 'blue'
+			}
+			matchingMarker.draggable = false;
+
+			// grab the new lat/lng and update the database
+			var newLat = layer.model.lat;
+			var newLng = layer.model.lng;
+			var markerName = layer.model.message;
+
+			matchingMarker.lat = newLat;
+			matchingMarker.lng = newLng;
+
+			MongoURLService.updatePoint($scope.mapName.toLowerCase(), markerName, newLat, newLng).then(function (response) {
+				console.log('UpdateMarker:', response);
+			});
+		}
+	});
+
+	// Path Events
 	$scope.$on('leafletDirectivePath.map.mouseover', function(event, layer){
-		// find scope path object and change it's color and weight when clicked
 		var pathClicked = layer.leafletEvent.target.options.layer;
-
-		// Change Path color and weight while hovering
 		$scope.paths[pathClicked].weight = 8;
 	})
 
 	$scope.$on('leafletDirectivePath.map.mouseout', function(event, layer){
-		// find scope path object and change it's color and weight when clicked
 		var pathClicked = layer.leafletEvent.target.options.layer;
-
-		// Change Path weight while hovering
 		$scope.paths[pathClicked].weight = 5;
+	})
+
+	$scope.$on('leafletDirectivePath.map.contextmenu', function (event, layer) {
+		if (!$scope.godMode) {
+			return;
+		}
+		
+		// Todo: need to swap all icons back to normal and set draggable to false
+
+		var pathClicked = layer.leafletEvent.target.options.layer;
+		var scpRef = $scope.paths[pathClicked];
+		$scope.activePath = scpRef;
+
+		scpRef.color = "purple";
+		scpRef.opacity = 1;
+
+		// add temp markers to the map
+		var pathCoords = scpRef.latlngs;
+		var pathName = scpRef.message;
+
+		for (var i = 0; i < pathCoords.length; i++) {
+			var marker = {
+				lat: pathCoords[i].lat,
+				lng: pathCoords[i].lng,
+				message: pathName,
+				icon: {
+					type: 'awesomeMarker',
+					prefix: 'fa',
+					icon: 'arrows',
+					markerColor: 'red'
+				},
+				draggable: true,
+				toBeRemoved: true,
+				layer: 'poi'
+			}
+
+			$scope.markers.push(marker);
+		}
 	})
 
 	loadMaps();

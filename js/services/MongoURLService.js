@@ -107,6 +107,34 @@ angular.module('myApp')
         return def.promise;
 	}
 
+	//update point
+	this.updatePoint = function (mapName, pointName, lat, lng) {
+		var def = $q.defer();
+
+		$http.post('http://www.mikelmaps.com/mongo/updatePoint/' + mapName + '/' + pointName + '/' + lat + '/' + lng)
+			.then(function (data) {
+				def.resolve(data);
+			}, function (error) {
+				def.reject("Failed to update ", pointName, " in ", mapName, ".");
+			});
+		
+		return def.promise;
+	}
+
+	//update path
+	this.updatePathPoint = function (mapName, pathName, coordIndex, newLat, newLng) {
+		var def = $q.defer();
+
+		$http.post('http://www.mikelmaps.com/mongo/updatePathPoint/' + mapName + '/' + pathName + '/'+ coordIndex + '/' + newLat + '/' + newLng)
+			.then(function (data) {
+				def.resolve(data);
+			}, function (error) {
+				def.reject("Failed to update ", pathName, " point in ", mapName, ".");
+			});
+		
+		return def.promise;
+	}
+
 	this.addDay = function() {
 		var def = $q.defer();
 

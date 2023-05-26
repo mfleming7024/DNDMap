@@ -132,6 +132,54 @@ app.post('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => 
     );
 });
 
+// update point
+app.post('/mongo/updatePoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
+    db.collection('points').updateOne(
+        { label: req.params.pointName },
+        {
+            $set: {
+                coords: {
+                    lat: Number(req.params.lat),
+                    lng: Number(req.params.lng),
+                },
+                type: "city",
+                label: req.params.pointName,
+                mapName: req.params.mapName,
+            }
+        }, function (err, docs) {
+            if (err) {
+                res.status(400).send("Unable to update point in the db");
+            } else {
+                res.send(docs);
+            }
+        }
+    );
+});
+
+// update point
+app.post('/mongo/updatePathPoint/:mapName/:pathName/:coordIndex/:newLat/:newLng', cors(), (req, res) => {
+    db.collection('paths').updateOne(
+        {
+            mapName: req.params.mapName,
+            pathName: req.params.pathName
+        },
+        {
+            $set: {
+                [`coords.${req.params.coordIndex}`]: {
+                    lat: Number(req.params.newLat),
+                    lng: Number(req.params.newLng),
+                },
+            }
+        }, function (err, docs) {
+            if (err) {
+                res.status(400).send("Unable to update path point in the db");
+            } else {
+                res.send(docs);
+            }
+        }
+    );
+});
+
 app.post('/mongo/addDay/', cors(), (req, res) => {
     db.collection('plants').updateMany(
         {quantity: {$gt : 0}},
