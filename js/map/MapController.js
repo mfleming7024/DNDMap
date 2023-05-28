@@ -11,7 +11,7 @@ angular.module('myApp')
 			southWest: {}
 		},
 		paths: {},	
-		markers: {},
+		markers: [],
 		layers: {
 			baselayers: {},
 			overlays: {}
@@ -157,8 +157,6 @@ angular.module('myApp')
 					'shopping-cart': "yellow"
 				}
 
-				$scope.markers = [];
-
 				for (var i = 0; i < resData.length; ++i)
 					if (resData[i] !== undefined)
 						$scope.markers.push({
@@ -253,7 +251,7 @@ angular.module('myApp')
 		$scope.maxBounds = $scope.layers.baselayers[nameIdx].layerOptions.mongo.maxBounds;
 
 		$scope.layers.overlays = {};
-		$scope.markers = {};
+		$scope.markers = [];
 		$scope.paths = {};
 
 		loadPaths(nameIdx);

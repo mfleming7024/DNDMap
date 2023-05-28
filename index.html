@@ -55,7 +55,7 @@
     <div class="header">Search</div>
     <div class="body">
       <input class="search" type="text" id="searchField" ng-model="searchThing" ng-change="search(searchThing)" placeholder="e.g. Waterdeep"/>
-      <div class="search__result" ng-repeat="result in results" ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">{{result.item.message}}</div>
+      <div class="search__result" ng-repeat="result in results | limitTo: 5" ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">{{result.item.message}}</div>
     </div>
   </div>
 

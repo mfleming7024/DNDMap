@@ -321,11 +321,11 @@ header .fa-hat-wizard.enabled {
   cursor: pointer;
   margin: 10px 0;
   font-size: 18px;
+  text-decoration: underline;
 }
 
 .modal .search__result.green {
   color: green;
-  text-decoration: underline;
   font-weight: bold;
 }
 
