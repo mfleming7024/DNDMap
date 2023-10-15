@@ -381,6 +381,11 @@ header .fa-hat-wizard.enabled {
   height: 50px;
   width: 100%;
 }
+.floating-button .prompt-field input.loading {
+  pointer-events: none;
+  background: lightgray;
+  cursor: not-allowed;
+}
 
 .floating-button .prompt-response {
   position:absolute;
@@ -407,7 +412,11 @@ header .fa-hat-wizard.enabled {
   border-radius: 13px;
   border: 2px solid cornflowerblue;
 }
-
+.floating-button .prompt-button button.loading {
+  pointer-events: none;
+  background: lightgray;
+  cursor: not-allowed;
+}
 
 .floating-button.open {
   animation: openModal 0.5s forwards;

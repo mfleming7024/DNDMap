@@ -65,11 +65,11 @@
   <div class="floating-button" ng-class="{'open': isBardOpen}" ng-click="isBardOpen = true">
     <img src="img/google_bard_icon.png" alt="Bard icon">
     <div class="prompt-field">
-      <input type="text" placeholder="Enter a prompt here" ng-keydown="$event.keyCode === 13 && submitBardPrompt()"
-        ng-model="bardMessage" />
+      <input type="text" placeholder="Enter a prompt here" ng-class="{'loading': bardLoading}"
+        ng-keydown="$event.keyCode === 13 && submitBardPrompt()" ng-model="bardMessage" />
     </div>
     <div class="prompt-button">
-      <button ng-click="submitBardPrompt()">
+      <button ng-class="{'loading': bardLoading}" ng-click="submitBardPrompt()">
         <i class="fas fa-paper-plane"></i>
       </button>
     </div>

@@ -217,20 +217,26 @@ app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
             },
         })
         .then((result) => {
-            const result = JSON.stringify(result, null, 2)
-            db.collection('bard').insertOne(
-                {
-                    prompt: req.params.bardPrompt,
-                    response: result,
-                    date: new Date(),
-                }, function (err, docs) {
-                    if (err) {
-                        res.status(400).send("Unable to add bard prompt to the db");
-                    } else {
-                        res.send(result);
+            const parseResponse = JSON.stringify(result, null, 2);
+            if (parseResponse[0].candidates[0].output) {
+                const bardResponse = parseResponse[0].candidates[0].output || "Please ask a different question";
+
+                db.collection('bard').insertOne(
+                    {
+                        prompt: req.params.bardPrompt,
+                        response: bardResponse,
+                        date: new Date(),
+                    }, function (err, docs) {
+                        if (err) {
+                            res.status(400).send("Unable to add bard prompt to the db");
+                        } else {
+                            res.send(bardResponse);
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                res.status(400).send("Bard Prompt Incorrectly Formatted or Not Found, please try again");
+            }
         });
 });
 

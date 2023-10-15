@@ -36,9 +36,16 @@ angular.module('myApp')
 			var bardPrompt = $scope.bardMessage;
 			$scope.bardPrompt = "";
 
+			if ($scope.bardLoading) {
+				return;
+			}
+
+			$scope.bardLoading = true;
+
 			MongoURLService.askBard(bardPrompt).then(function (response) {
-				console.log('askBard:', response);
-				$scope.bardMessage = response;
+				console.log('AskBard:', bardPrompt, response);
+				$scope.bardResponse = response;
+				$scope.bardLoading = false;
 			});
 		}
 

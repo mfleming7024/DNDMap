@@ -157,6 +157,8 @@ angular.module('myApp')
 				}, function (error) {
 					def.reject("Failed to ask bard");
 				});
+
+			return def.promise;
 		}
 
 	});
