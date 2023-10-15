@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp')
-	.controller('mainController', ['$scope', 'MongoURLService', 'IngredientsService', 'leafletData', function ($scope, MongoURLService, IngredientsService, leafletData) {
+	.controller('mainController', ['$scope', 'MongoURLService', 'IngredientsService', 'leafletData', '$sce', function ($scope, MongoURLService, IngredientsService, leafletData, $sce) {
 
 		angular.extend($scope, {
 			defaults: { crs: 'Simple' },
@@ -44,7 +44,7 @@ angular.module('myApp')
 
 			MongoURLService.askBard(bardPrompt).then(function (response) {
 				console.log('AskBard:', bardPrompt, response);
-				$scope.bardResponse = response;
+				$scope.bardResponse = $sce.trustAsHtml(response.data);
 				$scope.bardLoading = false;
 			});
 		}

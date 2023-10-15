@@ -395,12 +395,15 @@ header .fa-hat-wizard.enabled {
   top: 100px;
 }
 
-.floating-button .prompt-response textarea {
+.floating-button .prompt-response div {
   border: 2px solid cornflowerblue;
   border-radius: 12px;
   height: 100%;
   width: 100%;
   resize: none;
+  padding: 10px;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .floating-button .prompt-button {
@@ -410,6 +413,8 @@ header .fa-hat-wizard.enabled {
   height: 50px;
   width: 80px;
   border-radius: 13px;
+  background: white;
+  cursor: pointer;
   border: 2px solid cornflowerblue;
 }
 .floating-button .prompt-button button.loading {

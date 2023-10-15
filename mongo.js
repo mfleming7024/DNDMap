@@ -1,6 +1,7 @@
 const express = require('express');
 const mongo = require('mongodb').MongoClient;
 const cors = require('cors');
+const { marked } = require('marked');
 const { TextServiceClient } = require("@google-ai/generativelanguage").v1beta2;
 const { GoogleAuth } = require("google-auth-library");
 
@@ -208,7 +209,6 @@ app.post('/mongo/addDay/', cors(), (req, res) => {
 });
 
 app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
-    // fire off a request to the bard api and then add the response to the db
     client
         .generateText({
             model: MODEL_NAME,
@@ -217,26 +217,24 @@ app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
             },
         })
         .then((result) => {
-            const parseResponse = JSON.stringify(result, null, 2);
-            if (parseResponse[0].candidates[0].output) {
-                const bardResponse = parseResponse[0].candidates[0].output || "Please ask a different question";
+            const bardResponse = result[0].candidates[0].output || "I don't know what to say.";
+            console.log(bardResponse);
+            const markdown = marked(bardResponse);
+            console.log('markdown rendered', markdown)
 
-                db.collection('bard').insertOne(
-                    {
-                        prompt: req.params.bardPrompt,
-                        response: bardResponse,
-                        date: new Date(),
-                    }, function (err, docs) {
-                        if (err) {
-                            res.status(400).send("Unable to add bard prompt to the db");
-                        } else {
-                            res.send(bardResponse);
-                        }
+            db.collection('bard').insertOne(
+                {
+                    prompt: req.params.bardPrompt,
+                    response: bardResponse,
+                    date: new Date(),
+                }, function (err, docs) {
+                    if (err) {
+                        res.status(400).send("Unable to add bard prompt to the db");
+                    } else {
+                        res.send(markdown);
                     }
-                );
-            } else {
-                res.status(400).send("Bard Prompt Incorrectly Formatted or Not Found, please try again");
-            }
+                }
+            );
         });
 });
 
@@ -249,7 +247,7 @@ mongo.connect('mongodb+srv://mongo:pass@cluster0-qmjg5.mongodb.net/dnd_nodes?ret
             if (err || docs.length == 0) {
                 console.log("No maps in maps db");
             } else {
-                console.log(docs);
+                console.log("Maps found in the DB");
             }
         });
     }
