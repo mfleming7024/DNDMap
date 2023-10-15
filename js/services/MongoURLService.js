@@ -1,151 +1,162 @@
 'use strict';
 
 angular.module('myApp')
-.service('MongoURLService', function($http, $q){
+	.service('MongoURLService', function ($http, $q) {
 
-	this.getMaps = function(mapName) {
-		var def = $q.defer();
+		this.getMaps = function (mapName) {
+			var def = $q.defer();
 
-		$http.get('http://www.mikelmaps.com/mongo/getMaps/')
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to get maps");
-	        });
+			$http.get('http://www.mikelmaps.com/mongo/getMaps/')
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to get maps");
+				});
 
-        return def.promise;
-	};
+			return def.promise;
+		};
 
-	this.getPaths = function(mapName) {
-		var def = $q.defer();
+		this.getPaths = function (mapName) {
+			var def = $q.defer();
 
-		$http.get('http://www.mikelmaps.com/mongo/getPaths/'+mapName)
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to get paths");
-	        });
+			$http.get('http://www.mikelmaps.com/mongo/getPaths/' + mapName)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to get paths");
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	this.getMarkers = function(mapName) {
-		var def = $q.defer();
+		this.getMarkers = function (mapName) {
+			var def = $q.defer();
 
-		$http.get('http://www.mikelmaps.com/mongo/getPoints/'+mapName)
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to get markers");
-	        });
+			$http.get('http://www.mikelmaps.com/mongo/getPoints/' + mapName)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to get markers");
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	this.getPotions = function() {
-		var def = $q.defer();
+		this.getPotions = function () {
+			var def = $q.defer();
 
-		$http.get('http://www.mikelmaps.com/mongo/getPotions/')
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to get potions");
-	        });
+			$http.get('http://www.mikelmaps.com/mongo/getPotions/')
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to get potions");
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	this.getPlants = function() {
-		var def = $q.defer();
+		this.getPlants = function () {
+			var def = $q.defer();
 
-		$http.get('http://www.mikelmaps.com/mongo/getPlants/')
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to get plants");
-	        });
+			$http.get('http://www.mikelmaps.com/mongo/getPlants/')
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to get plants");
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	this.incrementPlant = function(plant) {
-		var def = $q.defer();
+		this.incrementPlant = function (plant) {
+			var def = $q.defer();
 
-		$http.post('http://www.mikelmaps.com/mongo/addPlant/'+plant)
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to increment "+plant);
-	        });
+			$http.post('http://www.mikelmaps.com/mongo/addPlant/' + plant)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to increment " + plant);
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	this.harvestPlant = function(plant, amount) {
-		var def = $q.defer();
+		this.harvestPlant = function (plant, amount) {
+			var def = $q.defer();
 
-		$http.post('http://www.mikelmaps.com/mongo/harvestPlant/'+plant+'/'+amount)
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to harvest ", plant, " ", amount, " times.");
-	        });
+			$http.post('http://www.mikelmaps.com/mongo/harvestPlant/' + plant + '/' + amount)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to harvest ", plant, " ", amount, " times.");
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	this.addPoint = function(mapName, pointName, lat, lng) {
-		var def = $q.defer();
+		this.addPoint = function (mapName, pointName, lat, lng) {
+			var def = $q.defer();
 
-		$http.post('http://www.mikelmaps.com/mongo/addPoint/'+mapName+'/'+pointName+'/'+lat+'/'+lng)
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to add ", pointName, " to ", mapName,".");
-	        });
+			$http.post('http://www.mikelmaps.com/mongo/addPoint/' + mapName + '/' + pointName + '/' + lat + '/' + lng)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to add ", pointName, " to ", mapName, ".");
+				});
 
-        return def.promise;
-	}
+			return def.promise;
+		}
 
-	//update point
-	this.updatePoint = function (mapName, pointName, lat, lng) {
-		var def = $q.defer();
+		//update point
+		this.updatePoint = function (mapName, pointName, lat, lng) {
+			var def = $q.defer();
 
-		$http.post('http://www.mikelmaps.com/mongo/updatePoint/' + mapName + '/' + pointName + '/' + lat + '/' + lng)
-			.then(function (data) {
-				def.resolve(data);
-			}, function (error) {
-				def.reject("Failed to update ", pointName, " in ", mapName, ".");
-			});
-		
-		return def.promise;
-	}
+			$http.post('http://www.mikelmaps.com/mongo/updatePoint/' + mapName + '/' + pointName + '/' + lat + '/' + lng)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to update ", pointName, " in ", mapName, ".");
+				});
 
-	//update path
-	this.updatePathPoint = function (mapName, pathName, coordIndex, newLat, newLng) {
-		var def = $q.defer();
+			return def.promise;
+		}
 
-		$http.post('http://www.mikelmaps.com/mongo/updatePathPoint/' + mapName + '/' + pathName + '/'+ coordIndex + '/' + newLat + '/' + newLng)
-			.then(function (data) {
-				def.resolve(data);
-			}, function (error) {
-				def.reject("Failed to update ", pathName, " point in ", mapName, ".");
-			});
-		
-		return def.promise;
-	}
+		//update path
+		this.updatePathPoint = function (mapName, pathName, coordIndex, newLat, newLng) {
+			var def = $q.defer();
 
-	this.addDay = function() {
-		var def = $q.defer();
+			$http.post('http://www.mikelmaps.com/mongo/updatePathPoint/' + mapName + '/' + pathName + '/' + coordIndex + '/' + newLat + '/' + newLng)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to update ", pathName, " point in ", mapName, ".");
+				});
 
-		$http.post('http://www.mikelmaps.com/mongo/addDay/')
-			.then(function(data) {
-	            def.resolve(data);
-	        },function(error){
-	        	def.reject("Failed to add day");
-	        });
+			return def.promise;
+		}
 
-        return def.promise;
-	}
+		this.addDay = function () {
+			var def = $q.defer();
 
-});
+			$http.post('http://www.mikelmaps.com/mongo/addDay/')
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to add day");
+				});
+
+			return def.promise;
+		}
+
+		this.askBard = function (bardPrompt) {
+			var def = $q.defer();
+
+			$http.post('http://www.mikelmaps.com/mongo/askBard/' + bardPrompt)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to ask bard");
+				});
+		}
+
+	});

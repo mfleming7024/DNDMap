@@ -1,5 +1,7 @@
 <html ng-app="myApp">
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,10 +19,13 @@
   <script src="js/leaflet.awesome-markers.min.js"></script>
   <script src="https://kit.fontawesome.com/3f39d832a7.js" crossorigin="anonymous"></script>
 </head>
+
 <body ng-controller="mainController">
   <header>
-    <i class="fas fa-map" ng-click="enableGodMode();"></i><h1 id="map-name">Map of {{mapName}}</h1>
-    <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr" target="_blank">
+    <i class="fas fa-map" ng-click="enableGodMode();"></i>
+    <h1 id="map-name">Map of {{mapName}}</h1>
+    <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr"
+      target="_blank">
       <i class="fas fa-microphone"></i>
     </a>
     <i class="pull-right fas fa-flask" ng-if="godMode" ng-click="toggleOverlay('potion');"></i>
@@ -29,14 +34,8 @@
   </header>
 
   <!-- Map Container -->
-  <leaflet id="map" 
-    defaults="defaults" 
-    maxBounds="maxBounds" 
-    center="center" 
-    layers="layers" 
-    paths="paths" 
-    markers="markers"
-    event-broadcast="events">
+  <leaflet id="map" defaults="defaults" maxBounds="maxBounds" center="center" layers="layers" paths="paths"
+    markers="markers" event-broadcast="events">
   </leaflet>
 
   <!-- Partial for potion lab -->
@@ -54,8 +53,28 @@
     <i class="fa fa-times-circle-o" ng-click="toggleSearchModal()"></i>
     <div class="header">Search</div>
     <div class="body">
-      <input class="search" type="text" id="searchField" ng-model="searchThing" ng-change="search(searchThing)" placeholder="e.g. Waterdeep"/>
-      <div class="search__result" ng-repeat="result in results | limitTo: 5" ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">{{result.item.message}}</div>
+      <input class="search" type="text" id="searchField" ng-model="searchThing" ng-change="search(searchThing)"
+        placeholder="e.g. Waterdeep" />
+      <div class="search__result" ng-repeat="result in results | limitTo: 5"
+        ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">
+        {{result.item.message}}
+      </div>
+    </div>
+  </div>
+
+  <div class="floating-button" ng-class="{'open': isBardOpen}" ng-click="isBardOpen = true">
+    <img src="img/google_bard_icon.png" alt="Bard icon">
+    <div class="prompt-field">
+      <input type="text" placeholder="Enter a prompt here" ng-keydown="$event.keyCode === 13 && submitBardPrompt()"
+        ng-model="bardMessage" />
+    </div>
+    <div class="prompt-button">
+      <button ng-click="submitBardPrompt()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+    <div class="prompt-response">
+      <textarea readonly>{{bardResponse}}</textarea>
     </div>
   </div>
 
@@ -70,20 +89,5 @@
   <script type="text/javascript" src="js/garden/GardenController.js"></script>
   <script type="text/javascript" src="js/potionlab/PotionController.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -6,6 +6,7 @@
   "repository": "https://github.com/angular/angular-seed",
   "license": "MIT",
   "dependencies": {
+    "@google-ai/generativelanguage": "^1.1.0",
     "angular": "^1.7.5",
     "angular-loader": "^1.7.5",
     "angular-route": "^1.7.5",
@@ -14,6 +15,7 @@
     "express": "^4.17.1",
     "feather-icons": "^4.21.0",
     "forever": "^1.0.0",
+    "google-auth-library": "^9.1.0",
     "html5-boilerplate": "0.0.1",
     "leaflet": "^1.8",
     "mongodb": "^3.2.7",
@@ -28,6 +30,6 @@
   },
   "scripts": {
     "send-to-server": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/ && scp -r dist/* mikel@142.93.15.233:/var/www/dndmap.com/html",
-    "start": "http-server -a localhost -p 8000 -c-1 ./app"
+    "start": "http-server -a localhost -p 8000 -c-1 ./"
   }
 }

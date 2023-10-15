@@ -329,23 +329,140 @@ header .fa-hat-wizard.enabled {
   font-weight: bold;
 }
 
-.floatingButton {
+.floating-button {
   position: fixed;
   right: 50px;
   bottom: 50px;
-  z-index: 1001;
-  display: block;
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 2px solid black;
-  font-size: 36px;
-  font-family: sans-serif;
-  padding-bottom: 3px;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  background-color: white;
+  border: 3px solid cornflowerblue;
   transition: background-color 0.5s;
 }
 
-.floatingButton:hover {
-  background-color: darkgray;
+.floating-button img {
+  width: 65%;
+  height: 65%;
+}
+
+.floating-button:hover {
+  background-color: azure;
+}
+.floating-button.open:hover {
+  background-color: white;
+}
+
+.floating-button .prompt-field,
+.floating-button .prompt-button,
+.floating-button .prompt-response {
+  display: none;
+}
+
+.floating-button.open .prompt-field,
+.floating-button.open .prompt-button,
+.floating-button.open .prompt-response {
+  display: block;
+}
+
+/* Default styles for button and field */
+.floating-button .prompt-field {
+  right: 100px;
+}
+.floating-button .prompt-field input {
+  border: 2px solid cornflowerblue;
+  border-radius: 12px;
+  padding-left: 10px;
+  height: 50px;
+  width: 100%;
+}
+
+.floating-button .prompt-response {
+  position:absolute;
+  right:10px;
+  bottom: 10px;
+  left: 10px;
+  top: 100px;
+}
+
+.floating-button .prompt-response textarea {
+  border: 2px solid cornflowerblue;
+  border-radius: 12px;
+  height: 100%;
+  width: 100%;
+  resize: none;
+}
+
+.floating-button .prompt-button {
+  cursor: pointer;
+}
+.floating-button .prompt-button button {
+  height: 50px;
+  width: 80px;
+  border-radius: 13px;
+  border: 2px solid cornflowerblue;
+}
+
+
+.floating-button.open {
+  animation: openModal 0.5s forwards;
+  cursor: unset;
+}
+.floating-button.open img {
+  animation: moveImage 0.5 forwards;
+  width: unset;
+  height: unset;
+}
+.floating-button.open .prompt-field {
+  animation: moveField 0.5 forwards;
+}
+.floating-button.open .prompt-button {
+  animation: moveButton 0.5 forwards;
+}
+
+
+/* Generate keyframes for moving the floating button to the middle and then expanding it to become a modal */
+@keyframes openModal {
+  0% {}
+  100% {
+    border-radius: 8px;
+    right: calc(50% - 225px);
+    bottom: calc(50% - 250px);
+    width: 450px;
+    height: 500px;
+  }
+}
+
+@keyframes moveImage {
+  0% {}
+  100% {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    width: 40px;
+    height: auto;
+  }
+}
+
+@keyframes moveField {
+  0% {}
+  100% {
+    position: absolute;
+    top: 17px;
+    left: 70px;
+  }
+}
+
+@keyframes moveButton {
+  0% {}
+  100% {
+    position: absolute;
+    top: 17px;
+    right: 10px;
+  }
 }
