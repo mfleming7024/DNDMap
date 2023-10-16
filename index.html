@@ -76,6 +76,9 @@
     <div class="prompt-response">
       <div ng-bind-html="bardResponse"></div>
     </div>
+    <div class="prompt-close">
+      <i class="fas fa-times-circle" ng-click="isBardOpen = false; $event.stopPropagation();"></i>
+    </div>
   </div>
 
   <script src="node_modules/angular/angular.js"></script>
