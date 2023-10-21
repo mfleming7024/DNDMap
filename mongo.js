@@ -218,9 +218,7 @@ app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
         })
         .then((result) => {
             const bardResponse = result[0].candidates[0].output || "I don't know what to say.";
-            console.log(bardResponse);
             const markdown = marked(bardResponse);
-            console.log('markdown rendered', markdown)
 
             db.collection('bard').insertOne(
                 {
@@ -253,4 +251,4 @@ mongo.connect('mongodb+srv://mongo:pass@cluster0-qmjg5.mongodb.net/dnd_nodes?ret
     }
 });
 
-app.listen(3001, () => console.log(`DND Mongo DB listening on port 3001!`));
+app.listen(3001, () => console.log(`DND Mongo DB listening on port 3001`));
