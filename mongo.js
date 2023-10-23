@@ -236,6 +236,9 @@ app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
         });
 });
 
+// TODO: 
+// Create a database of notes taken via the notion API? Google docs API? which I can then query against and display on the map
+
 mongo.connect('mongodb+srv://mongo:pass@cluster0-qmjg5.mongodb.net/dnd_nodes?retryWrites=true&w=majority', { useNewUrlParser: true }, (err, client) => {
     if (err) {
         throw err;

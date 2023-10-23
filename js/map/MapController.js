@@ -49,8 +49,10 @@ angular.module('myApp')
 			});
 		}
 
+		$scope.bardResponse = $sce.trustAsHtml("<h2>I am the bard, what would you like to know?</h2><br><p>You can ask me things like: <ul><li>Come up with a name for a rat that I found in the trash near a small cottage.</li><li>I need a backstory for a town located in between a goblin warcamp and a lake.</li></ul>");
+
 		// indexing options for fuse
-		var options = {
+		var fuseOptions = {
 			keys: ['message'],
 			includeScore: true
 		};
@@ -207,7 +209,7 @@ angular.module('myApp')
 					}
 
 					// initialize Fuse with the index
-					fuse = new Fuse($scope.markers, options)
+					fuse = new Fuse($scope.markers, fuseOptions)
 				}
 
 			});
