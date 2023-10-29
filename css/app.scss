@@ -1,13 +1,17 @@
 /*! HTML5 Boilerplate v7.1.0 | MIT License | https://html5boilerplate.com/ */
+
 /* main.css 1.0.0 | MIT License | https://github.com/h5bp/main.css#readme */
 /*
  * What follows is the result of much research on cross-browser styling.
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
  * Kroc Camen, and the H5BP dev community and team.
  */
+
+
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
+
 html {
   color: #222;
   font-size: 1em;
@@ -32,6 +36,7 @@ body {
  *
  * Customize the background color to match your design.
  */
+
 ::-moz-selection {
   background: #b3d4fc;
   text-shadow: none;
@@ -41,6 +46,7 @@ body {
   background: #b3d4fc;
   text-shadow: none;
 }
+
 
 .clearfix:before,
 .clearfix:after {
@@ -59,7 +65,7 @@ body {
   flex-direction: column;
 }
 
-body > header {
+body>header {
   background-color: lightgray;
   width: 100%;
   border-bottom: 2px solid black;
@@ -68,7 +74,7 @@ body > header {
 #map-name {
   float: left;
   margin-left: 15px;
-  font-family: "Alegreya", serif;
+  font-family: 'Alegreya', serif;
   font-size: 21px;
   user-select: none;
 }
@@ -79,30 +85,37 @@ body > header {
   flex-grow: 1;
 }
 
-header .fas {
-  margin: 13px;
-}
-header .fas.green::before {
-  color: green;
-}
-header .fas::before {
-  font-size: 28px;
-}
-header a {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
-header .fa-microphone,
-header .fa-flask,
-header .fa-clipboard,
-header .fa-search,
-header .fa-seedling {
-  width: 25px;
-  cursor: pointer;
-}
-header .fa-hat-wizard.enabled {
-  color: green;
+header {
+  .fas {
+    margin: 13px;
+
+    &.green::before {
+      color: green;
+    }
+
+    &::before {
+      font-size: 28px;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .fa-microphone,
+  .fa-flask,
+  .fa-clipboard,
+  .fa-search,
+  .fa-seedling {
+    width: 25px;
+    cursor: pointer;
+  }
+
+  .fa-hat-wizard.enabled {
+    color: green;
+  }
 }
 
 .bag-overlay,
@@ -140,7 +153,7 @@ header .fa-hat-wizard.enabled {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-image: url("../img/grassrepeat.jpeg");
+  background-image: url('../img/grassrepeat.jpeg');
   background-repeat: repeat;
   background-size: contain;
   overflow: auto;
@@ -247,7 +260,7 @@ header .fa-hat-wizard.enabled {
 
 .bag__title {
   float: left;
-  font-family: "Alegreya", serif;
+  font-family: 'Alegreya', serif;
   font-size: 28px;
 }
 
@@ -301,41 +314,49 @@ header .fa-hat-wizard.enabled {
   border-radius: 4px;
   padding: 10px;
   box-shadow: black 0px 7px 69px 20px;
+
+  &.show {
+    display: block;
+  }
+
+  .header {
+    border-bottom: 1px solid black;
+  }
+
+  i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  .body {
+    padding-top: 5px;
+  }
+
+  .search {
+    appearance: none;
+    border: 2px solid black;
+    border-radius: 4px;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 1.2em;
+
+    &__result {
+      cursor: pointer;
+      margin: 10px 0;
+      font-size: 18px;
+      text-decoration: underline;
+
+      &.green {
+        color: green;
+        font-weight: bold;
+      }
+    }
+  }
 }
-.modal.show {
-  display: block;
-}
-.modal .header {
-  border-bottom: 1px solid black;
-}
-.modal i {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  cursor: pointer;
-}
-.modal .body {
-  padding-top: 5px;
-}
-.modal .search {
-  appearance: none;
-  border: 2px solid black;
-  border-radius: 4px;
-  width: 100%;
-  height: 50px;
-  padding: 10px;
-  font-size: 1.2em;
-}
-.modal .search__result {
-  cursor: pointer;
-  margin: 10px 0;
-  font-size: 18px;
-  text-decoration: underline;
-}
-.modal .search__result.green {
-  color: green;
-  font-weight: bold;
-}
+
 
 .floating-button {
   position: fixed;
@@ -352,105 +373,125 @@ header .fa-hat-wizard.enabled {
   background-color: white;
   border: 3px solid cornflowerblue;
   transition: background-color 0.5s;
-}
-.floating-button:hover {
-  background-color: azure;
-}
-.floating-button.open:hover {
-  background-color: white;
-}
-.floating-button.open {
-  animation: openModal 0.5s forwards;
-  cursor: unset;
-}
-.floating-button.open img {
-  animation: moveImage 0.5 forwards;
-  width: unset;
-  height: unset;
-}
-.floating-button.open .prompt-field,
-.floating-button.open .prompt-button,
-.floating-button.open .prompt-response,
-.floating-button.open .prompt-close {
-  display: block;
-}
-.floating-button.open .prompt-field {
-  animation: moveField 0.5 forwards;
-}
-.floating-button.open .prompt-button {
-  animation: moveButton 0.5 forwards;
-}
-.floating-button.open .prompt-close {
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  background-color: white;
-  border-radius: 50%;
-  font-size: 24px;
-  border: 2px solid cornflowerblue;
-  cursor: pointer;
-}
-.floating-button img {
-  width: 65%;
-  height: 65%;
-}
-.floating-button .prompt-field,
-.floating-button .prompt-button,
-.floating-button .prompt-response,
-.floating-button .prompt-close {
-  display: none;
-}
-.floating-button .prompt-field {
-  right: 100px;
-}
-.floating-button .prompt-field input {
-  border: 2px solid cornflowerblue;
-  border-radius: 12px;
-  padding: 0 10px;
-  height: 50px;
-  width: 100%;
-}
-.floating-button .prompt-field input.loading {
-  pointer-events: none;
-  background: lightgray;
-  cursor: not-allowed;
-}
-.floating-button .prompt-button {
-  cursor: pointer;
-}
-.floating-button .prompt-button.loading {
-  pointer-events: none;
-  background: lightgray;
-  cursor: not-allowed;
-}
-.floating-button .prompt-button button {
-  height: 50px;
-  width: 80px;
-  border-radius: 13px;
-  background: white;
-  cursor: pointer;
-  border: 2px solid cornflowerblue;
-}
-.floating-button .prompt-response {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  left: 10px;
-  top: 100px;
-}
-.floating-button .prompt-response div {
-  border: 2px solid cornflowerblue;
-  border-radius: 12px;
-  height: 100%;
-  width: 100%;
-  resize: none;
-  padding: 10px;
-  overflow: auto;
-  box-sizing: border-box;
+
+  &:hover {
+    background-color: azure;
+  }
+
+  &.open:hover {
+    background-color: white;
+  }
+
+  &.open {
+    animation: openModal 0.5s forwards;
+    cursor: unset;
+
+    img {
+      animation: moveImage 0.5 forwards;
+      width: unset;
+      height: unset;
+    }
+
+    .prompt-field,
+    .prompt-button,
+    .prompt-response,
+    .prompt-close {
+      display: block;
+    }
+
+    .prompt-field {
+      animation: moveField 0.5 forwards;
+    }
+
+    .prompt-button {
+      animation: moveButton 0.5 forwards;
+    }
+
+    .prompt-close {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background-color: white;
+      border-radius: 50%;
+      font-size: 24px;
+      border: 2px solid cornflowerblue;
+      cursor: pointer;
+    }
+  }
+
+  img {
+    width: 65%;
+    height: 65%;
+  }
+
+  .prompt-field,
+  .prompt-button,
+  .prompt-response,
+  .prompt-close {
+    display: none;
+  }
+
+  .prompt-field {
+    right: 100px;
+
+    input {
+      border: 2px solid cornflowerblue;
+      border-radius: 12px;
+      padding: 0 10px;
+      height: 50px;
+      width: 100%;
+
+      &.loading {
+        pointer-events: none;
+        background: lightgray;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .prompt-button {
+    cursor: pointer;
+
+    &.loading {
+      pointer-events: none;
+      background: lightgray;
+      cursor: not-allowed;
+    }
+
+    button {
+      height: 50px;
+      width: 80px;
+      border-radius: 13px;
+      background: white;
+      cursor: pointer;
+      border: 2px solid cornflowerblue;
+    }
+  }
+
+  .prompt-response {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    top: 100px;
+
+    div {
+      border: 2px solid cornflowerblue;
+      border-radius: 12px;
+      height: 100%;
+      width: 100%;
+      resize: none;
+      padding: 10px;
+      overflow: auto;
+      box-sizing: border-box;
+    }
+  }
 }
 
 /* Generate keyframes for moving the floating button to the middle and then expanding it to become a modal */
 @keyframes openModal {
+  0% {}
+
   100% {
     border-radius: 8px;
     right: calc(50% - 225px);
@@ -459,7 +500,10 @@ header .fa-hat-wizard.enabled {
     height: 500px;
   }
 }
+
 @keyframes moveImage {
+  0% {}
+
   100% {
     position: absolute;
     top: 20px;
@@ -468,19 +512,23 @@ header .fa-hat-wizard.enabled {
     height: auto;
   }
 }
+
 @keyframes moveField {
+  0% {}
+
   100% {
     position: absolute;
     top: 17px;
     left: 70px;
   }
 }
+
 @keyframes moveButton {
+  0% {}
+
   100% {
     position: absolute;
     top: 17px;
     right: 10px;
   }
 }
-
-/*# sourceMappingURL=app.css.map */

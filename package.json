@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "mikel-maps",
   "private": true,
-  "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "version": "1.3.0",
+  "description": "A map application for our DND players to use to track their adventures and things they find along the way.",
+  "repository": "https://github.com/mfleming7024/DNDMap",
   "license": "MIT",
   "dependencies": {
     "@google-ai/generativelanguage": "^1.1.0",
@@ -20,6 +20,7 @@
     "leaflet": "^1.8",
     "marked": "^9.1.2",
     "mongodb": "^3.2.7",
+    "sass": "^1.69.5",
     "teseract": "^2.12.0",
     "ui-leaflet": "^1.0.3"
   },
@@ -30,7 +31,9 @@
     "jasmine-core": "^3.3.0"
   },
   "scripts": {
-    "send-to-server": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/ && scp -r dist/* mikel@142.93.15.233:/var/www/dndmap.com/html",
-    "start": "http-server -a localhost -p 8000 -c-1 ./"
+    "watch:sass": "sass --watch css/app.scss css/app.css",
+    "build": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/",
+    "send-to-server": "scp -r dist/* mikel@142.93.15.233:/var/www/dndmap.com/html",
+    "start": "npm run watch:sass & http-server -a localhost -p 8000 -c-1 ./"
   }
 }
