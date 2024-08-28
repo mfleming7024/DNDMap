@@ -109,13 +109,13 @@ angular.module('myApp')
 		var loadMaps = function () {
 			MongoURLService.getMaps().then(function (data) {
 
-				// Grab faerun map data and move it to the front of the list
-				var faerun = data.data.filter(function (blah) {
-					return blah.mapName == "faerun";
+				// Grab default map data and move it to the front of the list
+				var defaultMap = data.data.filter(function (map) {
+					return map.mapName == "astrazalian";
 				});
-				var faerunIndex = data.data.indexOf(faerun[0]);
+				var defaultIndex = data.data.indexOf(defaultMap[0]);
 
-				data.data.unshift(data.data.splice(faerunIndex, 1)[0]);
+				data.data.unshift(data.data.splice(defaultIndex, 1)[0]);
 
 				console.log('GetMaps:', data);
 
@@ -145,19 +145,19 @@ angular.module('myApp')
 				}
 
 				$scope.center = {
-					lat: faerun[0].mapCenter.lat,
-					lng: faerun[0].mapCenter.lng,
-					zoom: faerun[0].zoom
+					lat: defaultMap[0].mapCenter.lat,
+					lng: defaultMap[0].mapCenter.lng,
+					zoom: defaultMap[0].zoom
 				}
 
 				$scope.maxBounds = {
-					northEast: { lat: faerun[0].bounds[1][0], lng: faerun[0].bounds[1][1] },
+					northEast: { lat: defaultMap[0].bounds[1][0], lng: defaultMap[0].bounds[1][1] },
 					southWest: { lat: 0, lng: 0 }
 				};
 
-				$scope.mapName = faerun[0].mapActual;
-				loadPaths(faerun[0].mapName);
-				loadMarkers(faerun[0].mapName);
+				$scope.mapName = defaultMap[0].mapActual;
+				loadPaths(defaultMap[0].mapName);
+				loadMarkers(defaultMap[0].mapName);
 			});
 			loadPlants();
 			loadPotions();

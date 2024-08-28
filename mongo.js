@@ -5,11 +5,10 @@ const { marked } = require('marked');
 const { TextServiceClient } = require("@google-ai/generativelanguage").v1beta2;
 const { GoogleAuth } = require("google-auth-library");
 
-const MODEL_NAME = "models/text-bison-001";
 // const API_KEY = process.env.API_KEY;
 // Hardcoded for now vv
 const API_KEY = "AIzaSyBWWcOkjMzNNY-JPnqwJ2hHeYj5hq6CSy8";
-
+const MODEL_NAME = "models/text-bison-001";
 const client = new TextServiceClient({
     authClient: new GoogleAuth().fromAPIKey(API_KEY),
 });
@@ -237,7 +236,7 @@ app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
 });
 
 // TODO: 
-// Create a database of notes taken via the notion API? Google docs API? which I can then query against and display on the map
+// Filter images out of scp command in package.json
 
 mongo.connect('mongodb+srv://mongo:pass@cluster0-qmjg5.mongodb.net/dnd_nodes?retryWrites=true&w=majority', { useNewUrlParser: true }, (err, client) => {
     if (err) {

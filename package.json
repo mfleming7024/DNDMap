@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@google-ai/generativelanguage": "^1.1.0",
+    "@google/generative-ai": "^0.17.1",
     "angular": "^1.7.5",
     "angular-loader": "^1.7.5",
     "angular-route": "^1.7.5",
@@ -32,8 +33,8 @@
   },
   "scripts": {
     "watch:sass": "sass --watch css/app.scss css/app.css",
-    "build": "rm -rf dist/ && mkdir dist && cp -R app css img js templates index.html mongo.js package.json dist/",
-    "send-to-server": "npm run build && scp -r dist/* mikel@142.93.15.233:/var/www/dndmap.com/html",
+    "build": "rm -rf dist/ && mkdir dist && cp -R app css js templates index.html mongo.js package.json dist/",
+    "send-to-server": "npm run build && scp -r dist/* mikel@206.81.5.116:/var/www/dndmap.com/html",
     "start": "npm run watch:sass & http-server -a localhost -p 8000 -c-1 ./"
   }
 }

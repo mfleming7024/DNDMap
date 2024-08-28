@@ -77,7 +77,7 @@ body>header {
   font-family: 'Alegreya', serif;
   font-size: 21px;
   user-select: none;
-}
+} 
 
 #map {
   width: 100%;
@@ -378,44 +378,44 @@ header {
     background-color: azure;
   }
 
-  &.open:hover {
-    background-color: white;
-  }
-
   &.open {
     animation: openModal 0.5s forwards;
     cursor: unset;
-
+    &:hover {
+      background-color: white;
+    }
     img {
       animation: moveImage 0.5 forwards;
       width: unset;
       height: unset;
     }
 
-    .prompt-field,
-    .prompt-button,
-    .prompt-response,
-    .prompt-close {
-      display: block;
-    }
+    .prompt {
+      &-field,
+      &-button,
+      &-response,
+      &-close {
+        display: block;
+      }
 
-    .prompt-field {
-      animation: moveField 0.5 forwards;
-    }
+      &-field {
+        animation: moveField 0.5 forwards;
+      }
 
-    .prompt-button {
-      animation: moveButton 0.5 forwards;
-    }
+      &-button {
+        animation: moveButton 0.5 forwards;
+      }
 
-    .prompt-close {
-      position: absolute;
-      top: -15px;
-      right: -15px;
-      background-color: white;
-      border-radius: 50%;
-      font-size: 24px;
-      border: 2px solid cornflowerblue;
-      cursor: pointer;
+      &-close {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        background-color: white;
+        border-radius: 50%;
+        font-size: 24px;
+        border: 2px solid cornflowerblue;
+        cursor: pointer;
+      }
     }
   }
 
@@ -432,7 +432,7 @@ header {
   }
 
   .prompt-field {
-    right: 100px;
+    right: 10px;
 
     input {
       border: 2px solid cornflowerblue;
@@ -460,11 +460,10 @@ header {
 
     button {
       height: 50px;
-      width: 80px;
-      border-radius: 13px;
+      width: 50px;
       background: white;
       cursor: pointer;
-      border: 2px solid cornflowerblue;
+      border-left: 2px solid cornflowerblue;
     }
   }
 
@@ -496,7 +495,8 @@ header {
     border-radius: 8px;
     right: calc(50% - 225px);
     bottom: calc(50% - 250px);
-    width: 450px;
+    width: 100%;
+    max-width: 450px;
     height: 500px;
   }
 }
