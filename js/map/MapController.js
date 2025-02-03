@@ -32,25 +32,6 @@ angular.module('myApp')
 			}
 		});
 
-		$scope.submitBardPrompt = function () {
-			var bardPrompt = $scope.bardMessage;
-			$scope.bardPrompt = "";
-
-			if ($scope.bardLoading) {
-				return;
-			}
-
-			$scope.bardLoading = true;
-
-			MongoURLService.askBard(bardPrompt).then(function (response) {
-				console.log('AskBard:', bardPrompt, response);
-				$scope.bardResponse = $sce.trustAsHtml(response.data);
-				$scope.bardLoading = false;
-			});
-		}
-
-		$scope.bardResponse = $sce.trustAsHtml("<h2>I am the bard, what would you like to know?</h2><br><p>You can ask me things like: <ul><li>Come up with a name for a rat that I found in the trash near a small cottage.</li><li>I need a backstory for a town located in between a goblin warcamp and a lake.</li></ul>");
-
 		// indexing options for fuse
 		var fuseOptions = {
 			keys: ['message'],
@@ -107,35 +88,36 @@ angular.module('myApp')
 		}
 
 		var loadMaps = function () {
-			MongoURLService.getMaps().then(function (data) {
+			MongoURLService.getMaps().then(function (results) {
+				var resData = results.data;
 
 				// Grab default map data and move it to the front of the list
-				var defaultMap = data.data.filter(function (map) {
-					return map.mapName == "astrazalian";
+				var defaultMap = resData.filter(function (map) {
+					return map.mapName == "anarouch";
 				});
-				var defaultIndex = data.data.indexOf(defaultMap[0]);
+				var defaultIndex = resData.indexOf(defaultMap[0]);
 
-				data.data.unshift(data.data.splice(defaultIndex, 1)[0]);
+				resData.unshift(resData.splice(defaultIndex, 1)[0]);
 
-				console.log('GetMaps:', data);
+				console.log('GetMaps:', results);
 
-				for (var i = 0; i < data.data.length; i++) {
-					$scope.layers.baselayers[data.data[i].mapName] = {
-						name: data.data[i].mapActual,
+				for (var i = 0; i < resData.length; i++) {
+					$scope.layers.baselayers[resData[i].mapName] = {
+						name: resData[i].mapActual,
 						type: 'imageOverlay',
-						url: "/" + data.data[i].image,
-						bounds: data.data[i].bounds,
+						url: "/" + resData[i].image,
+						bounds: resData[i].bounds,
 						layerParams: {
 							noWrap: true,
 							mongo: {
-								name: data.data[i].mapName,
+								name: resData[i].mapName,
 								center: {
-									lat: data.data[i].mapCenter.lat,
-									lng: data.data[i].mapCenter.lng,
-									zoom: data.data[i].zoom
+									lat: resData[i].mapCenter.lat,
+									lng: resData[i].mapCenter.lng,
+									zoom: resData[i].zoom
 								},
 								maxBounds: {
-									northEast: { lat: data.data[i].bounds[1][0], lng: data.data[i].bounds[1][1] },
+									northEast: { lat: resData[i].bounds[1][0], lng: resData[i].bounds[1][1] },
 									southWest: { lat: 0, lng: 0 }
 								}
 							}

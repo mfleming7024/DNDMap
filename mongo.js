@@ -207,34 +207,6 @@ app.post('/mongo/addDay/', cors(), (req, res) => {
     );
 });
 
-app.post('/mongo/askBard/:bardPrompt', cors(), (req, res) => {
-    client
-        .generateText({
-            model: MODEL_NAME,
-            prompt: {
-                text: req.params.bardPrompt,
-            },
-        })
-        .then((result) => {
-            const bardResponse = result[0].candidates[0].output || "I don't know what to say.";
-            const markdown = marked(bardResponse);
-
-            db.collection('bard').insertOne(
-                {
-                    prompt: req.params.bardPrompt,
-                    response: bardResponse,
-                    date: new Date(),
-                }, function (err, docs) {
-                    if (err) {
-                        res.status(400).send("Unable to add bard prompt to the db");
-                    } else {
-                        res.send(markdown);
-                    }
-                }
-            );
-        });
-});
-
 // TODO: 
 // Filter images out of scp command in package.json
 

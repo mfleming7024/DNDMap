@@ -62,25 +62,6 @@
     </div>
   </div>
 
-  <div class="floating-button" ng-class="{'open': isBardOpen}" ng-click="isBardOpen = true">
-    <img src="img/google_bard_icon.png" alt="Bard icon">
-    <div class="prompt-field">
-      <input type="text" placeholder="Enter a prompt here" ng-class="{'loading': bardLoading}"
-        ng-keydown="$event.keyCode === 13 && submitBardPrompt()" ng-model="bardMessage" />
-    </div>
-    <div class="prompt-button">
-      <button ng-class="{'loading': bardLoading}" ng-click="submitBardPrompt()">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
-    <div class="prompt-response">
-      <div ng-bind-html="bardResponse"></div>
-    </div>
-    <div class="prompt-close">
-      <i class="fas fa-times-circle" ng-click="isBardOpen = false; $event.stopPropagation();"></i>
-    </div>
-  </div>
-
   <script src="node_modules/angular/angular.js"></script>
   <script type="text/javascript" src="node_modules/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
   <script type="text/javascript" src="node_modules/ui-leaflet/dist/ui-leaflet.min.js"></script>
