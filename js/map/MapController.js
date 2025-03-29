@@ -100,7 +100,6 @@ angular.module('myApp')
 				resData.unshift(resData.splice(defaultIndex, 1)[0]);
 
 				console.log('GetMaps:', results);
-
 				for (var i = 0; i < resData.length; i++) {
 					$scope.layers.baselayers[resData[i].mapName] = {
 						name: resData[i].mapActual,
@@ -164,7 +163,7 @@ angular.module('myApp')
 								lat: resData[i].coords.lat,
 								lng: resData[i].coords.lng,
 								message: resData[i].label,
-								opacity: 0.6,
+								opacity: 0.8,
 								icon: {
 									type: 'awesomeMarker',
 									prefix: 'fa',
@@ -173,9 +172,6 @@ angular.module('myApp')
 								},
 								layer: resData[i].type !== undefined ? resData[i].type : 'poi'
 							});
-							if (resData[i].defaultLocation) {
-								console.log('Default Location:', resData[i].defaultLocation);
-							}
 						}
 					}
 
@@ -271,6 +267,7 @@ angular.module('myApp')
 
 		$scope.$on('leafletDirectiveMap.map.click', function (event, layer) {
 			if ($scope.godMode) {
+				// TODO: Implement marker types 
 				var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
 
 				// Don't proceed if no marker name
@@ -391,35 +388,38 @@ angular.module('myApp')
 			}
 
 			// Todo: need to swap all icons back to normal and set draggable to false
+			if ($scope.activePath) {
+				console.log('we have an active path already')
+			} else {
+				var pathClicked = layer.leafletEvent.target.options.layer;
+				var scpRef = $scope.paths[pathClicked];
+				$scope.activePath = scpRef;
 
-			var pathClicked = layer.leafletEvent.target.options.layer;
-			var scpRef = $scope.paths[pathClicked];
-			$scope.activePath = scpRef;
+				scpRef.color = "purple";
+				scpRef.opacity = 1;
 
-			scpRef.color = "purple";
-			scpRef.opacity = 1;
+				// add temp markers to the map
+				var pathCoords = scpRef.latlngs;
+				var pathName = scpRef.message;
 
-			// add temp markers to the map
-			var pathCoords = scpRef.latlngs;
-			var pathName = scpRef.message;
+				for (var i = 0; i < pathCoords.length; i++) {
+					var marker = {
+						lat: pathCoords[i].lat,
+						lng: pathCoords[i].lng,
+						message: pathName,
+						icon: {
+							type: 'awesomeMarker',
+							prefix: 'fa',
+							icon: 'arrows',
+							markerColor: 'red'
+						},
+						draggable: true,
+						toBeRemoved: true,
+						layer: 'poi'
+					}
 
-			for (var i = 0; i < pathCoords.length; i++) {
-				var marker = {
-					lat: pathCoords[i].lat,
-					lng: pathCoords[i].lng,
-					message: pathName,
-					icon: {
-						type: 'awesomeMarker',
-						prefix: 'fa',
-						icon: 'arrows',
-						markerColor: 'red'
-					},
-					draggable: true,
-					toBeRemoved: true,
-					layer: 'poi'
+					$scope.markers.push(marker);
 				}
-
-				$scope.markers.push(marker);
 			}
 		})
 
