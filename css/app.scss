@@ -66,7 +66,7 @@ body {
 }
 
 body>header {
-  background-color: lightgray;
+  background-color: bisque;
   width: 100%;
   border-bottom: 2px solid black;
 }
@@ -116,6 +116,10 @@ header {
   .fa-hat-wizard.enabled {
     color: green;
   }
+}
+
+.leaflet-image-layer {
+  box-shadow: 2px 4px 12px darkgrey;
 }
 
 .bag-overlay,
@@ -354,181 +358,5 @@ header {
         font-weight: bold;
       }
     }
-  }
-}
-
-
-.floating-button {
-  position: fixed;
-  right: 50px;
-  bottom: 50px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: white;
-  border: 3px solid cornflowerblue;
-  transition: background-color 0.5s;
-
-  &:hover {
-    background-color: azure;
-  }
-
-  &.open {
-    animation: openModal 0.5s forwards;
-    cursor: unset;
-    &:hover {
-      background-color: white;
-    }
-    img {
-      animation: moveImage 0.5 forwards;
-      width: unset;
-      height: unset;
-    }
-
-    .prompt {
-      &-field,
-      &-button,
-      &-response,
-      &-close {
-        display: block;
-      }
-
-      &-field {
-        animation: moveField 0.5 forwards;
-      }
-
-      &-button {
-        animation: moveButton 0.5 forwards;
-      }
-
-      &-close {
-        position: absolute;
-        top: -15px;
-        right: -15px;
-        background-color: white;
-        border-radius: 50%;
-        font-size: 24px;
-        border: 2px solid cornflowerblue;
-        cursor: pointer;
-      }
-    }
-  }
-
-  img {
-    width: 65%;
-    height: 65%;
-  }
-
-  .prompt-field,
-  .prompt-button,
-  .prompt-response,
-  .prompt-close {
-    display: none;
-  }
-
-  .prompt-field {
-    right: 10px;
-
-    input {
-      border: 2px solid cornflowerblue;
-      border-radius: 12px;
-      padding: 0 10px;
-      height: 50px;
-      width: 100%;
-
-      &.loading {
-        pointer-events: none;
-        background: lightgray;
-        cursor: not-allowed;
-      }
-    }
-  }
-
-  .prompt-button {
-    cursor: pointer;
-
-    &.loading {
-      pointer-events: none;
-      background: lightgray;
-      cursor: not-allowed;
-    }
-
-    button {
-      height: 50px;
-      width: 50px;
-      background: white;
-      cursor: pointer;
-      border-left: 2px solid cornflowerblue;
-    }
-  }
-
-  .prompt-response {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    left: 10px;
-    top: 100px;
-
-    div {
-      border: 2px solid cornflowerblue;
-      border-radius: 12px;
-      height: 100%;
-      width: 100%;
-      resize: none;
-      padding: 10px;
-      overflow: auto;
-      box-sizing: border-box;
-    }
-  }
-}
-
-/* Generate keyframes for moving the floating button to the middle and then expanding it to become a modal */
-@keyframes openModal {
-  0% {}
-
-  100% {
-    border-radius: 8px;
-    right: calc(50% - 225px);
-    bottom: calc(50% - 250px);
-    width: 100%;
-    max-width: 450px;
-    height: 500px;
-  }
-}
-
-@keyframes moveImage {
-  0% {}
-
-  100% {
-    position: absolute;
-    top: 20px;
-    left: 15px;
-    width: 40px;
-    height: auto;
-  }
-}
-
-@keyframes moveField {
-  0% {}
-
-  100% {
-    position: absolute;
-    top: 17px;
-    left: 70px;
-  }
-}
-
-@keyframes moveButton {
-  0% {}
-
-  100% {
-    position: absolute;
-    top: 17px;
-    right: 10px;
   }
 }

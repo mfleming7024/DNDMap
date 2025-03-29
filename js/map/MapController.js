@@ -93,7 +93,7 @@ angular.module('myApp')
 
 				// Grab default map data and move it to the front of the list
 				var defaultMap = resData.filter(function (map) {
-					return map.mapName == "anarouch";
+					return map.mapName == "impiltur";
 				});
 				var defaultIndex = resData.indexOf(defaultMap[0]);
 
@@ -158,8 +158,8 @@ angular.module('myApp')
 						'shopping-cart': "yellow"
 					}
 
-					for (var i = 0; i < resData.length; ++i)
-						if (resData[i] !== undefined)
+					for (var i = 0; i < resData.length; ++i) {
+						if (resData[i] !== undefined) {
 							$scope.markers.push({
 								lat: resData[i].coords.lat,
 								lng: resData[i].coords.lng,
@@ -173,6 +173,11 @@ angular.module('myApp')
 								},
 								layer: resData[i].type !== undefined ? resData[i].type : 'poi'
 							});
+							if (resData[i].defaultLocation) {
+								console.log('Default Location:', resData[i].defaultLocation);
+							}
+						}
+					}
 
 					var addedOverlays = ['poi', 'city', 'user', 'shopping-cart'];
 
