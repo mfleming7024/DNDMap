@@ -125,10 +125,18 @@ angular.module('myApp')
 					}
 				}
 
+				// find out whether the user is on a mobile device and set $scope.deviceType
+				$scope.deviceType = window.innerWidth < 768 ? 'mobile' : 'desktop';
+
+				var useMobile = false;
+				if (angular.isDefined($scope.deviceType) && $scope.deviceType == 'mobile') {
+					useMobile = true;
+				}
+
 				$scope.center = {
-					lat: defaultMap[0].mapCenter.lat,
-					lng: defaultMap[0].mapCenter.lng,
-					zoom: defaultMap[0].zoom
+					lat: !useMobile ? defaultMap[0].mapCenter.lat : defaultMap[0].mapCenter.lat + 30,
+					lng: !useMobile ? defaultMap[0].mapCenter.lng : defaultMap[0].mapCenter.lng + 200,
+					zoom: defaultMap[0].zoom,
 				}
 
 				$scope.maxBounds = {
@@ -163,7 +171,7 @@ angular.module('myApp')
 								lat: resData[i].coords.lat,
 								lng: resData[i].coords.lng,
 								message: resData[i].label,
-								opacity: 0.8,
+								opacity: 1,
 								icon: {
 									type: 'awesomeMarker',
 									prefix: 'fa',
@@ -267,7 +275,7 @@ angular.module('myApp')
 
 		$scope.$on('leafletDirectiveMap.map.click', function (event, layer) {
 			if ($scope.godMode) {
-				// TODO: Implement marker types 
+				// TODO: Implement marker types via generic modal
 				var markerName = prompt("Marker Name?", "Enter marker name here, e.g. Waterdeep");
 
 				// Don't proceed if no marker name
@@ -279,13 +287,14 @@ angular.module('myApp')
 					lat: layer.leafletEvent.latlng.lat,
 					lng: layer.leafletEvent.latlng.lng,
 					message: markerName,
+					opacity: 1,
 					icon: {
 						type: 'awesomeMarker',
 						prefix: 'fa',
-						icon: 'poi',
+						icon: 'city',
 						markerColor: 'blue'
 					},
-					layer: 'poi'
+					layer: 'city'
 				}
 
 				// Push dummy marker to the map
@@ -299,6 +308,21 @@ angular.module('myApp')
 				console.log('{"lat":' + layer.leafletEvent.latlng.lat.toFixed(3) + ', "lng":' + layer.leafletEvent.latlng.lng.toFixed(3) + '}');
 			}
 		});
+
+		function findMarker(label) {
+			return $scope.markers.filter(function (marker) { return marker.message == label })[0];
+		}
+
+		// Marker Events
+		$scope.$on('leafletDirectiveMarker.map.mouseover', function (event, layer) {
+			var hoveredMarker = findMarker(layer.model.message);
+			hoveredMarker.icon.markerColor = 'purple';
+		})
+
+		$scope.$on('leafletDirectiveMarker.map.mouseout', function (event, layer) {
+			var hoveredMarker = findMarker(layer.model.message);
+			hoveredMarker.icon.markerColor = 'blue';
+		})
 
 		$scope.$on('leafletDirectiveMarker.map.contextmenu', function (event, layer) {
 			if (!$scope.godMode) {
