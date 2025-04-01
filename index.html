@@ -22,7 +22,7 @@
 
 <body ng-controller="mainController">
   <header>
-    <i class="fas fa-map" ng-click="enableGodMode();"></i>
+    <i class="fas fa-map" ng-class="{'green': godMode}" ng-click="enableGodMode();"></i>
     <h1 id="map-name">Map of {{mapName}}</h1>
     <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr"
       target="_blank">

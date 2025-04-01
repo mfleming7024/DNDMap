@@ -1,4 +1,4 @@
 ### TODO List
 
-1. Compile SCSS when making a build
+1. Create an overlay taking place of javascript.alert()
 2. Ability to disable maps, paths, points based on flag
