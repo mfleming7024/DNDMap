@@ -33,7 +33,8 @@
   },
   "scripts": {
     "watch:sass": "sass --watch css/app.scss css/app.css",
-    "build": "rm -rf dist/ && mkdir dist && cp -R app css js templates index.html mongo.js package.json dist/",
+    "build:css": "sass css/app.scss css/app.css",
+    "build": "rm -rf dist/ && mkdir dist && build:css && cp -R app css js templates index.html mongo.js package.json dist/",
     "send-to-server": "npm run build && scp -r dist/* mikel@206.81.5.116:/var/www/dndmap.com/html",
     "start": "npm run watch:sass & http-server -a localhost -p 8000 -c-1 ./"
   }
