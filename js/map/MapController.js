@@ -130,17 +130,13 @@ angular.module('myApp')
 					}
 				}
 
-				// find out whether the user is on a mobile device and set $scope.deviceType
-				$scope.deviceType = window.innerWidth < 768 ? 'mobile' : 'desktop';
-
-				var useMobile = false;
 				if (angular.isDefined($scope.deviceType) && $scope.deviceType == 'mobile') {
 					useMobile = true;
 				}
 
 				$scope.center = {
-					lat: !useMobile ? defaultMap[0].mapCenter.lat : defaultMap[0].mapCenter.lat + 30,
-					lng: !useMobile ? defaultMap[0].mapCenter.lng : defaultMap[0].mapCenter.lng + 200,
+					lat: defaultMap[0].mapCenter.lat,
+					lng: defaultMap[0].mapCenter.lng,
 					zoom: defaultMap[0].zoom,
 				}
 
