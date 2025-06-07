@@ -11,7 +11,7 @@ angular.module('myApp')
 				southWest: {}
 			},
 			paths: {},
-			markers: [],
+		 markers: [],
 			layers: {
 				baselayers: {},
 				overlays: {}
@@ -101,6 +101,11 @@ angular.module('myApp')
 
 				console.log('GetMaps:', results);
 				for (var i = 0; i < resData.length; i++) {
+					// ignore disabled maps
+					if (resData[i].disabled) {
+						continue;
+					}
+
 					$scope.layers.baselayers[resData[i].mapName] = {
 						name: resData[i].mapActual,
 						type: 'imageOverlay',
@@ -300,8 +305,11 @@ angular.module('myApp')
 				// Push dummy marker to the map
 				$scope.markers.push(marker);
 
+				// $scope.mapName to lowercase and remove spaces for MongoDB
+				var mapName = $scope.mapName.toLowerCase().replace(/\s+/g, '');
+
 				// Push dummy marker to the database
-				MongoURLService.addPoint($scope.mapName.toLowerCase(), markerName, marker.lat, marker.lng).then(function (response) {
+				MongoURLService.addPoint(mapName, markerName, marker.lat, marker.lng).then(function (response) {
 					console.log('AddMarker:', response);
 				});
 			} else {
@@ -329,15 +337,43 @@ angular.module('myApp')
 				return;
 			}
 
-			var matchingMarker = $scope.markers.filter(function (marker) { return marker.message == layer.model.message })[0];
+			var markerLabel = layer.model.message;
+			// $scope.mapName to lowercase and remove spaces for MongoDB, similar to addPoint
+			var mapName = $scope.mapName.toLowerCase().replace(/\\s+/g, '');
 
-			matchingMarker.icon = {
-				type: 'awesomeMarker',
-				prefix: 'fa',
-				icon: 'arrows',
-				markerColor: 'red'
+			// Ask user if they want to delete or move the marker
+			if (confirm("Do you want to delete the marker '" + markerLabel + "'? \\n\\nClick OK to Delete, or Cancel to make it movable.")) {
+				// User clicked OK - Delete the marker
+				var markerIndex = -1;
+				for (var i = 0; i < $scope.markers.length; i++) {
+					if ($scope.markers[i].message === markerLabel) {
+						markerIndex = i;
+						break;
+					}
+				}
+
+				if (markerIndex !== -1) {
+					$scope.markers.splice(markerIndex, 1); // Remove from UI
+
+					// Remove from DB
+					MongoURLService.deletePoint(mapName, markerLabel).then(function (response) {
+						console.log('DeleteMarker:', markerLabel, response);
+					});
+				}
+			} else {
+				// User clicked Cancel - Make the marker draggable (original behavior)
+				// Find the marker again, as it wasn't removed
+				var matchingMarker = $scope.markers.filter(function (marker) { return marker.message == markerLabel; })[0];
+				if (matchingMarker) {
+					matchingMarker.icon = {
+						type: 'awesomeMarker',
+						prefix: 'fa',
+						icon: 'arrows',
+						markerColor: 'red'
+					};
+					matchingMarker.draggable = true;
+				}
 			}
-			matchingMarker.draggable = true;
 		});
 
 		$scope.$on('leafletDirectiveMarker.map.dragstart', function (event, layer) {

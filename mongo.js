@@ -143,6 +143,24 @@ app.post('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => 
     );
 });
 
+app.post('/mongo/deletePoint/:mapName/:pointName', cors(), (req, res) => {
+    db.collection('points').deleteOne(
+        {
+            mapName: req.params.mapName,
+            label: req.params.pointName
+        },
+        function (err, result) {
+            if (err) {
+                res.status(400).send("Unable to delete point from the db: " + err);
+            } else if (result.deletedCount === 0) {
+                res.status(404).send("Point not found or already deleted: " + req.params.pointName + " on map " + req.params.mapName);
+            } else {
+                res.send({ message: "Successfully deleted point: " + req.params.pointName });
+            }
+        }
+    );
+});
+
 // update point
 app.post('/mongo/updatePoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
     db.collection('points').updateOne(

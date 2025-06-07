@@ -107,6 +107,19 @@ angular.module('myApp')
 			return def.promise;
 		}
 
+		this.deletePoint = function (mapName, pointName) {
+			var def = $q.defer();
+
+			$http.post('http://www.mikelmaps.com/mongo/deletePoint/' + mapName + '/' + pointName)
+				.then(function (data) {
+					def.resolve(data);
+				}, function (error) {
+					def.reject("Failed to delete " + pointName + " from " + mapName + ".");
+				});
+
+			return def.promise;
+		}
+
 		//update point
 		this.updatePoint = function (mapName, pointName, lat, lng) {
 			var def = $q.defer();
