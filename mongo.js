@@ -1,23 +1,12 @@
 const express = require('express');
 const mongo = require('mongodb').MongoClient;
 const cors = require('cors');
-const { marked } = require('marked');
-const { TextServiceClient } = require("@google-ai/generativelanguage").v1beta2;
-const { GoogleAuth } = require("google-auth-library");
-
-// const API_KEY = process.env.API_KEY;
-// Hardcoded for now vv
-const API_KEY = "AIzaSyBWWcOkjMzNNY-JPnqwJ2hHeYj5hq6CSy8";
-const MODEL_NAME = "models/text-bison-001";
-const client = new TextServiceClient({
-    authClient: new GoogleAuth().fromAPIKey(API_KEY),
-});
 
 const app = express();
 let db = null;
 
 app.use(cors({
-    origin: 'http://www.mikelmaps.com',
+    origin: ['http://www.mikelmaps.com', 'http://mikelweb.com'],
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT']
 }));
 
@@ -209,6 +198,7 @@ app.post('/mongo/updatePathPoint/:mapName/:pathName/:coordIndex/:newLat/:newLng'
     );
 });
 
+// increment day for all plants
 app.post('/mongo/addDay/', cors(), (req, res) => {
     db.collection('plants').updateMany(
         { quantity: { $gt: 0 } },
@@ -224,9 +214,6 @@ app.post('/mongo/addDay/', cors(), (req, res) => {
         }
     );
 });
-
-// TODO: 
-// Filter images out of scp command in package.json
 
 mongo.connect('mongodb+srv://mongo:pass@cluster0-qmjg5.mongodb.net/dnd_nodes?retryWrites=true&w=majority', { useNewUrlParser: true }, (err, client) => {
     if (err) {
