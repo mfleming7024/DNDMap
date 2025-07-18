@@ -6,7 +6,7 @@ const app = express();
 let db = null;
 
 app.use(cors({
-    origin: ['http://www.mikelmaps.com', 'http://mikelweb.com'],
+    origin: ['http://mikelweb.com'],
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT']
 }));
 
