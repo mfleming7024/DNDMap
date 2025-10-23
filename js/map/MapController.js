@@ -218,7 +218,7 @@ angular.module('myApp')
 
 				// Grab default map data and move it to the front of the list
 				var defaultMap = resData.filter(function (map) {
-					return map.mapName == "ravensbluff";
+					return map.mapName == "impiltur";
 				});
 				var defaultIndex = resData.indexOf(defaultMap[0]);
 
