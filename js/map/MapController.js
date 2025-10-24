@@ -162,7 +162,7 @@ angular.module('myApp')
 							color: resData.color,
 							pathName: resData.pathName,
 							weight: 5,
-							opacity: 0.6,
+							opacity: 0.7,
 							latlngs: resData.coords,
 							bubblingMouseEvents: false,
 							layer: key,
