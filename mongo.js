@@ -60,58 +60,6 @@ app.get('/mongo/getPaths/:mapName', cors(), (req, res) => {
     });
 });
 
-app.get('/mongo/getPotions/', cors(), (req, res) => {
-    db.collection('potions').find().toArray(function (err, docs) {
-        if (err || docs.length == 0) {
-            res.status(404).send("No potions from found in db");
-        } else {
-            res.send(docs);
-        }
-    });
-});
-
-app.get('/mongo/getPlants/', cors(), (req, res) => {
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    db.collection('plants').find({}).toArray(function (err, docs) {
-        if (err || docs.length == 0) {
-            res.status(404).send("No plants in plants db");
-        } else {
-            res.send(docs);
-        }
-    });
-});
-
-app.post('/mongo/harvestPlant/:plantName/:harvestedAmount', cors(), (req, res) => {
-    db.collection('plants').updateOne(
-        { name: req.params.plantName },
-        {
-            $set: { "timeToHarvest": 0 },
-            $inc: { "inv_quantity": parseInt(req.params.harvestedAmount) }
-        }, function (err, docs) {
-            if (err) {
-                res.status(400).send("Unable to update " + req.params.plantName + " in database" + err);
-            } else {
-                res.send(docs);
-            }
-        }
-    );
-});
-
-app.post('/mongo/addPlant/:plantName', cors(), (req, res) => {
-    db.collection('plants').updateOne(
-        { name: req.params.plantName },
-        {
-            $inc: { quantity: 1 }
-        }, function (err, docs) {
-            if (err) {
-                res.status(400).send("Unable to increment quantity for " + req.params.plantName + " in database");
-            } else {
-                res.send(docs);
-            }
-        }
-    );
-});
-
 app.post('/mongo/addPoint/:mapName/:pointName/:lat/:lng', cors(), (req, res) => {
     db.collection('points').insertOne(
         {
@@ -191,23 +139,6 @@ app.post('/mongo/updatePathPoint/:mapName/:pathName/:coordIndex/:newLat/:newLng'
         }, function (err, docs) {
             if (err) {
                 res.status(400).send("Unable to update path point in the db");
-            } else {
-                res.send(docs);
-            }
-        }
-    );
-});
-
-// increment day for all plants
-app.post('/mongo/addDay/', cors(), (req, res) => {
-    db.collection('plants').updateMany(
-        { quantity: { $gt: 0 } },
-        {
-            $inc:
-                { timeToHarvest: 1 }
-        }, function (err, docs) {
-            if (err) {
-                res.status(400).send("Unable to add day to plants in database");
             } else {
                 res.send(docs);
             }

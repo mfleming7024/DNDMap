@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp')
-	.controller('mainController', ['$scope', 'MongoURLService', 'IngredientsService', 'leafletData', '$sce', function ($scope, MongoURLService, IngredientsService, leafletData, $sce) {
+	.controller('mainController', ['$scope', 'MongoURLService', 'leafletData', '$sce', function ($scope, MongoURLService, leafletData, $sce) {
 
 		// $scope Properties
 		angular.extend($scope, {
@@ -69,24 +69,7 @@ angular.module('myApp')
 			}
 		};
 
-		$scope.toggleOverlay = function (overlayName) {
-			if (!$scope.godMode) {
-				return;
-			}
-
-			switch (overlayName) {
-				case 'potion':
-					$scope.showPotionLab = !$scope.showPotionLab;
-					break;
-				case 'garden':
-					$scope.showGarden = !$scope.showGarden;
-					break;
-				default:
-					break;
-			}
-		};
-
-		// Helper Functions
+// Helper Functions
 		function normalizeMapName(mapName) {
 			return mapName.toLowerCase().replace(/\s+/g, '');
 		}
@@ -180,22 +163,6 @@ angular.module('myApp')
 			});
 		};
 
-		var loadPlants = function () {
-			MongoURLService.getPlants().then(function (response) {
-				console.log('GetPlants:', response);
-				if (angular.isDefined(response.data))
-					IngredientsService.setIngredients(response.data);
-			});
-		};
-
-		var loadPotions = function () {
-			MongoURLService.getPotions().then(function (response) {
-				console.log('GetPotions:', response);
-				if (angular.isDefined(response.data))
-					IngredientsService.setPotions(response.data);
-			});
-		};
-
 		function readjustMap(event, thing) {
 			$scope.mapName = thing.leafletEvent.name;
 
@@ -274,8 +241,6 @@ angular.module('myApp')
 				loadPaths(defaultMap[0].mapName);
 				loadMarkers(defaultMap[0].mapName);
 			});
-			loadPlants();
-			loadPotions();
 		};
 
 

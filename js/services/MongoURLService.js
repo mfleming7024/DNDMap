@@ -42,58 +42,6 @@ angular.module('myApp')
 			return def.promise;
 		}
 
-		this.getPotions = function () {
-			var def = $q.defer();
-
-			$http.get('http://www.mikelweb.com/mongo/getPotions/')
-				.then(function (data) {
-					def.resolve(data);
-				}, function (error) {
-					def.reject("Failed to get potions");
-				});
-
-			return def.promise;
-		}
-
-		this.getPlants = function () {
-			var def = $q.defer();
-
-			$http.get('http://www.mikelweb.com/mongo/getPlants/')
-				.then(function (data) {
-					def.resolve(data);
-				}, function (error) {
-					def.reject("Failed to get plants");
-				});
-
-			return def.promise;
-		}
-
-		this.incrementPlant = function (plant) {
-			var def = $q.defer();
-
-			$http.post('http://www.mikelweb.com/mongo/addPlant/' + plant)
-				.then(function (data) {
-					def.resolve(data);
-				}, function (error) {
-					def.reject("Failed to increment " + plant);
-				});
-
-			return def.promise;
-		}
-
-		this.harvestPlant = function (plant, amount) {
-			var def = $q.defer();
-
-			$http.post('http://www.mikelweb.com/mongo/harvestPlant/' + plant + '/' + amount)
-				.then(function (data) {
-					def.resolve(data);
-				}, function (error) {
-					def.reject("Failed to harvest ", plant, " ", amount, " times.");
-				});
-
-			return def.promise;
-		}
-
 		this.addPoint = function (mapName, pointName, lat, lng) {
 			var def = $q.defer();
 
@@ -143,19 +91,6 @@ angular.module('myApp')
 					def.resolve(data);
 				}, function (error) {
 					def.reject("Failed to update ", pathName, " point in ", mapName, ".");
-				});
-
-			return def.promise;
-		}
-
-		this.addDay = function () {
-			var def = $q.defer();
-
-			$http.post('http://www.mikelweb.com/mongo/addDay/')
-				.then(function (data) {
-					def.resolve(data);
-				}, function (error) {
-					def.reject("Failed to add day");
 				});
 
 			return def.promise;
