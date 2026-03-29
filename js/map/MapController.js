@@ -234,7 +234,7 @@ angular.module('myApp')
 					$scope.layers.baselayers[resData[i].mapName] = {
 						name: resData[i].mapActual,
 						type: 'imageOverlay',
-						url: "/" + resData[i].image,
+						url: '/maps/' + resData[i].image,
 						bounds: resData[i].bounds,
 						layerParams: {
 							noWrap: true,
