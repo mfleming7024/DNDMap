@@ -1,63 +1,18 @@
-/*! HTML5 Boilerplate v7.1.0 | MIT License | https://html5boilerplate.com/ */
+// D&D Map Modern Theme
+$primary-bg: #1a1a1a;
+$accent-gold: #c5a059;
+$text-light: #f4f1ea;
+$text-dark: #333;
+$parchment: #f9f5e8;
+$modal-glass: rgba(26, 26, 26, 0.9);
 
-/* main.css 1.0.0 | MIT License | https://github.com/h5bp/main.css#readme */
-/*
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
-
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
-
-html {
-  color: #222;
-  font-size: 1em;
-  line-height: 1.4;
+html, body {
   height: 100%;
-}
-
-body {
-  height: 100%;
-}
-
-.pull-right {
-  float: right;
-}
-
-/*
- * Remove text-shadow in selection highlight:
- * https://twitter.com/miketaylr/status/12228805301
- *
- * Vendor-prefixed and regular ::selection selectors cannot be combined:
- * https://stackoverflow.com/a/16982510/7133471
- *
- * Customize the background color to match your design.
- */
-
-::-moz-selection {
-  background: #b3d4fc;
-  text-shadow: none;
-}
-
-::selection {
-  background: #b3d4fc;
-  text-shadow: none;
-}
-
-
-.clearfix:before,
-.clearfix:after {
-  content: " ";
-  /* 1 */
-  display: table;
-  /* 2 */
-}
-
-.clearfix:after {
-  clear: both;
+  margin: 0;
+  padding: 0;
+  font-family: 'Spectral', serif;
+  background-color: #121212;
+  color: $text-light;
 }
 
 body {
@@ -65,116 +20,240 @@ body {
   flex-direction: column;
 }
 
-body>header {
-  background-color: bisque;
-  width: 100%;
-  border-bottom: 2px solid black;
-}
-
-#map-name {
-  float: left;
-  margin-left: 15px;
-  font-family: 'Alegreya', serif;
-  font-size: 21px;
-  user-select: none;
-} 
-
-#map {
-  width: 100%;
-  margin: 0 auto;
-  flex-grow: 1;
-}
-
 header {
-  .fas {
-    margin: 13px;
+  background-color: $primary-bg;
+  border-bottom: 2px solid $accent-gold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1001;
 
-    &.green::before {
-      color: green;
-    }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
 
-    &::before {
-      font-size: 28px;
+  #map-name {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: $accent-gold;
+    margin: 0;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  .nav-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+    i {
+      font-size: 20px;
+      color: $text-light;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: $accent-gold;
+        transform: scale(1.1);
+      }
+
+      &.green {
+        color: #4CAF50;
+      }
     }
   }
 
   a {
     text-decoration: none;
     color: inherit;
-    cursor: pointer;
   }
+}
 
-  .fa-microphone,
-  .fa-flask,
-  .fa-clipboard,
-  .fa-search,
-  .fa-seedling {
-    width: 25px;
-    cursor: pointer;
-  }
-
-  .fa-hat-wizard.enabled {
-    color: green;
-  }
+#map {
+  flex-grow: 1;
+  width: 100%;
+  background: #0d0d0d;
 }
 
 .leaflet-image-layer {
-  box-shadow: 2px 4px 12px darkgrey;
+  filter: sepia(0.2) contrast(1.1);
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
 
-/* Modal Styling */
+/* Modal Styling - Modern Glassmorphism */
 .modal {
   display: none;
-  width: 80%;
-  max-width: 300px;
-  position: absolute;
-  top: 20%;
-  left: calc(50% - 150px);
-  z-index: 1000;
-  background: lightgray;
-  border: 2px solid black;
-  border-radius: 4px;
-  padding: 10px;
-  box-shadow: black 0px 7px 69px 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 450px;
+  z-index: 2000;
+  background: $modal-glass;
+  backdrop-filter: blur(10px);
+  border: 1px solid $accent-gold;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+  color: $text-light;
 
   &.show {
     display: block;
+    animation: fadeIn 0.3s ease;
   }
 
   .header {
-    border-bottom: 1px solid black;
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: $accent-gold;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+    padding-bottom: 10px;
   }
 
-  i {
+  .close-icon {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.5);
+    
+    &:hover {
+      color: $accent-gold;
+    }
   }
 
   .body {
-    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
-  .search {
-    appearance: none;
-    border: 2px solid black;
-    border-radius: 4px;
-    width: 100%;
-    height: 50px;
-    padding: 10px;
-    font-size: 1.2em;
+  input.search {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.5);
+    border-radius: 6px;
+    padding: 12px 15px;
+    color: white;
+    font-family: 'Spectral', serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
 
-    &__result {
-      cursor: pointer;
-      margin: 10px 0;
-      font-size: 18px;
-      text-decoration: underline;
-
-      &.green {
-        color: green;
-        font-weight: bold;
-      }
+    &:focus {
+      border-color: $accent-gold;
+      background: rgba(255, 255, 255, 0.1);
     }
+  }
+
+  .search__result {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+    font-size: 16px;
+
+    &:hover {
+      background: rgba(197, 160, 89, 0.1);
+      border-left-color: $accent-gold;
+      transform: translateX(5px);
+    }
+
+    &.green {
+      color: #81C784;
+      font-weight: 700;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -45%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Leaflet Customizations */
+.leaflet-popup-content-wrapper {
+  background: $parchment;
+  color: $text-dark;
+  font-family: 'Spectral', serif;
+  border-radius: 4px;
+  border: 1px solid $accent-gold;
+}
+
+.leaflet-popup-tip {
+  background: $parchment;
+}
+
+/* UI Controls (Zoom, Layers, etc.) */
+.leaflet-bar {
+  border: 1px solid $accent-gold !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6) !important;
+  border-radius: 6px !important;
+  overflow: hidden;
+
+  a {
+    background-color: $primary-bg !important;
+    color: $accent-gold !important;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2) !important;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    
+    &:hover {
+      background-color: #2a2a2a !important;
+      color: lighten($accent-gold, 15%) !important;
+    }
+
+    &.leaflet-disabled {
+      background-color: #111 !important;
+      color: #444 !important;
+    }
+  }
+}
+
+.leaflet-control-layers {
+  background: $modal-glass !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid $accent-gold !important;
+  border-radius: 8px !important;
+  color: $text-light !important;
+  font-family: 'Spectral', serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7) !important;
+
+  &-expanded {
+    padding: 12px;
+    background: $modal-glass !important;
+  }
+
+  &-toggle {
+    // Custom Gold SVG icon for layers
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23c5a059' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'/%3E%3Cpolyline points='2 17 12 22 22 17'/%3E%3Cpolyline points='2 12 12 17 22 12'/%3E%3C/svg%3E") !important;
+    background-size: 20px 20px !important;
+  }
+
+  label {
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $accent-gold;
+    }
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    accent-color: $accent-gold;
+    cursor: pointer;
   }
 }

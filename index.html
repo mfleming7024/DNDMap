@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="shortcut icon" href="/maps/img/favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css?family=Alegreya:700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Spectral:wght@400;700&display=swap" rel="stylesheet">
   <script type="text/javascript" src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" crossorigin=""></script>
   <script src="js/leaflet.awesome-markers.min.js"></script>
   <script src="https://kit.fontawesome.com/3f39d832a7.js" crossorigin="anonymous"></script>
@@ -22,13 +22,16 @@
 
 <body ng-controller="mainController">
   <header>
-    <i class="fas fa-map" ng-class="{'green': godMode}" ng-click="enableGodMode();"></i>
-    <h1 id="map-name">Map of {{mapName}}</h1>
-    <a class="pull-right" href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr"
-      target="_blank">
-      <i class="fas fa-microphone"></i>
-    </a>
-    <i class="pull-right fas fa-search" ng-click="toggleSearchModal();"></i>
+    <div class="brand">
+      <i class="fas fa-map" ng-class="{'green': godMode}" ng-click="enableGodMode();"></i>
+      <h1 id="map-name">Map of {{mapName}}</h1>
+    </div>
+    <div class="nav-icons">
+      <i class="fas fa-search" ng-click="toggleSearchModal();" title="Search Locations"></i>
+      <a href="https://drive.google.com/folderview?id=1-TubMXVF5HoxWnr6UBiJDZoTIWuD5TTr" target="_blank">
+        <i class="fas fa-microphone" title="Session Recordings"></i>
+      </a>
+    </div>
   </header>
 
   <!-- Map Container -->
@@ -36,16 +39,18 @@
     markers="markers" event-broadcast="events">
   </leaflet>
 
-  <!-- Searh Modal -->
+  <!-- Search Modal -->
   <div class="modal" ng-class="{'show': displaySearchModal}">
-    <i class="fa fa-times-circle-o" ng-click="toggleSearchModal()"></i>
-    <div class="header">Search</div>
+    <i class="fa fa-times-circle-o close-icon" ng-click="toggleSearchModal()"></i>
+    <div class="header">Search Map</div>
     <div class="body">
       <input class="search" type="text" id="searchField" ng-model="searchThing" ng-change="search(searchThing)"
-        placeholder="e.g. Waterdeep" />
-      <div class="search__result" ng-repeat="result in results | limitTo: 5"
-        ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">
-        {{result.item.message}}
+        placeholder="Search for a city, landmark, or player..." />
+      <div class="search-results-container">
+        <div class="search__result" ng-repeat="result in results | limitTo: 8"
+          ng-click="flyTo(result.item.lat, result.item.lng)" ng-class="{'green': result.score < 0.1}">
+          {{result.item.message}}
+        </div>
       </div>
     </div>
   </div>
